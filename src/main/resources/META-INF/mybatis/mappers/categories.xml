@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.erp.dao.CategoryDao">
+
+	<select id="getAllUpperCategories" resultType="Category">
+		select
+			CATEGORY_NO			as no,
+			CATEGORY_NAME		as name
+		from
+			categories
+		where
+			upper_category_no is null
+		order by
+			category_no asc
+		
+	</select>
+	
+	<select id="getSubCategoriesByUpperCateNo" parameterType="int" resultType="Category">
+		select
+			CATEGORY_NO			as no,
+			CATEGORY_NAME		as name
+		from
+			categories
+		where
+			upper_category_no = #{value}
+		order by
+			category_no asc
+	</select>
+	
+	<select id="getUpperCategoryBySubcategoryNo" parameterType="int" resultType="Category">
+		SELECT
+			A.CATEGORY_NO		as no,
+			A.CATEGORY_NAME		as name
+		from
+			categories A
+		where 
+			A.category_no in (select
+								UPPER_CATEGORY_NO
+							  from
+								categories
+							 where 
+								CATEGORY_NO = ${value})
+	</select>
+
+</mapper> 

@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.jhta.erp.dao.EmployeeDao"> 
+
+	<sql id="Employee_Info">
+			A.employee_no			no,
+			A.employee_name			name,
+			A.hire_date				hireDate,
+			A.employee_salary		salary,
+			A.employee_tel			tel,
+			A.retired				retired,
+			A.email					email,
+			A.image_name			imageName,
+            A.manager_no            managerNo,
+			B.department_no			departmentNo,
+			B.department_name		departmentName,
+			B.department_location	departmentLocation,
+			C.grade_no				gradeNo,
+			C.grade_name			gradeName,
+			C.grade_salary			gradeSalary	
+			
+	</sql>
+	
+	<select id="searchByOption" parameterType="map" resultType="EmployeeDetailDto">
+		select 
+			X.no				no,
+			X.name				name,
+			X.hireDate			hireDate,
+			X.salary			salary,
+			X.tel				tel,
+			X.retired			retired,
+			X.email				email,
+			X.imageName			imageName,
+			X.managerNo			managerNo,
+			X.departmentNo		departmentNo,
+			X.departmentName	departmentName,
+			X.departmentLocation	departmentLocation,
+			X.gradeNo			gradeNo,
+			X.gradeName			gradeName,
+			X.gradeSalary		gradeSalary
+		from(select  
+		       	row_number() over (order By hire_date desc) as rn,
+		       	<include refid="Employee_Info"/>
+		    from 
+		        	employees A, departments B, job_grades C
+		    <where>   
+		        A.department_no	= B.department_no(+)
+		        and A.grade_no = C.grade_no(+)
+		        and A.retired = 'N'
+		        <if test="option == 'no'">
+		            and A.employee_no like '%' || #{keyword} 
+		        </if>
+		        <if test="option == 'name'">
+		            and A.employee_name like '%' || #{keyword} || '%'
+		        </if>
+		        <if test="option == 'tel'">
+		            and A.employee_tel like '%' || #{keyword} || '%'
+		        </if>
+		        <if test="option == 'departmentName'">
+		            and B.department_name like '%' || #{keyword} || '%'
+		        </if>
+		        <if test="option == 'gradeName'">
+		            and C.grade_name like '%' || #{keyword} || '%'
+		        </if>
+		        <if test="startDate != null ">
+		            and A.hire_date >= #{startDate}
+		        </if>
+		        <if test="endDate != null ">
+		            and A.hire_date &lt;= #{endDate}
+		        </if>
+		     </where>) X
+		where 
+		    X.rn >= #{beginIndex}
+		    and X.rn &lt;= #{endIndex}
+	</select>
+	
+	<select id="getTotalPageSize" parameterType="map" resultType="int">
+		select 
+			count(*)
+		from 
+			employees A, departments B, job_grades C
+		<where>
+			A.department_no	= B.department_no(+)
+			and A.grade_no = C.grade_no(+)
+			and A.retired = 'N'
+	        <if test="option == 'no'">
+	            and A.employee_no like '%' || #{keyword} 
+	        </if>
+	        <if test="option == 'name'">
+	            and A.employee_name like '%' || #{keyword} || '%'
+	        </if>
+	        <if test="option == 'tel'">
+	            and A.employee_tel like '%' || #{keyword} || '%'
+	        </if>
+	        <if test="option == 'departmentName'">
+	            and B.department_name like '%' || #{keyword} || '%'
+	        </if>
+	        <if test="option == 'gradeName'">
+	            and C.grade_name like '%' || #{keyword} || '%'
+	        </if>
+	        <if test="startDate != null ">
+	            and A.hire_date >= #{startDate}
+	        </if>
+	        <if test="endDate != null ">
+	            and A.hire_date &lt;= #{endDate}
+	        </if>		
+		</where>
+	</select>
+	
+	<select id="getAllEmployees" resultType="EmployeeDetailDto">
+		select
+			<include refid="Employee_Info" />
+		from
+			employees A, departments B, job_grades C
+		where
+			A.department_no	= B.department_no(+)
+			and A.grade_no = C.grade_no(+)
+		order by A.hire_date desc
+	</select>
+	<select id="getAllEmployeesName" resultType="EmployeeDetailDto">
+		select
+			<include refid="Employee_Info" />
+		from
+			employees A, departments B, job_grades C
+		where
+			A.department_no	= B.department_no(+)
+			and A.grade_no = C.grade_no(+)
+		order by A.employee_name asc
+	</select>
+	
+	<select id="getEmployeesByDepartmentNo" parameterType="int" resultType="EmployeeDetailDto">
+		select
+			<include refid="Employee_Info" />
+		from
+			employees A, departments B, job_grades C
+		where
+			A.department_no	= B.department_no(+)
+			and A.grade_no = C.grade_no(+)
+			and A.department_no = #{value}
+		order by A.hire_date	desc	
+	</select>
+	
+	<select id="getMyInfoByNo" parameterType="int" resultType="EmployeeDetailDto">
+		select
+			A.employee_no			no,
+			A.employee_name			name,
+			A.hire_date				hireDate,
+			A.employee_tel			tel,
+			C.grade_name			gradeName,
+			B.department_name		departmentName,
+			B.department_location	departmentLocation,	
+			A.image_name			imageName,
+			A.email					email
+		from
+			employees A, departments B, job_grades C
+		where
+			A.department_no	= B.department_no(+)
+			and A.grade_no = C.grade_no(+)
+			and A.employee_no = #{value}
+	</select>
+	
+	<select id="getEmployeeByNo" parameterType="int" resultType="Employee">
+		select
+			EMPLOYEE_NO				as no,
+			EMPLOYEE_PASSWORD		as password,
+			EMPLOYEE_NAME			as name,
+			email					as email,
+			HIRE_DATE				as hireDate,
+			EMPLOYEE_SALARY			as salary,
+			EMPLOYEE_TEL			as tel,
+			DEPARTMENT_NO			as departmentNo,
+			MANAGER_NO				as managerNo,
+			GRADE_NO				as gradeNo,
+			image_name				as imageName,
+			RETIRED					as retired
+		from
+			employees
+		where
+			employee_no = #{value}
+		order by hire_date desc
+	</select>
+	
+	<select id="getSelectEmployees" parameterType="map" resultType="EmployeeDetailDto">
+		select
+			<include refid="Employee_Info" />
+		from
+			employees A, departments B, job_grades C
+		where
+			A.department_no	= B.department_no(+)
+			and A.grade_no = C.grade_no(+)
+		  <if test="option == 'no'">
+		            and A.employee_no like '%' || #{keyword} 
+		  </if>
+          <if test="option == 'name'">
+            and A.employee_name like '%' || #{keyword} || '%'
+          </if>
+          <if test="option == 'tel'">
+            and A.employee_tel like '%' || #{keyword} || '%'
+          </if>
+          <if test="option == 'departmentName'">
+            and B.department_name like '%' || #{keyword} || '%'
+          </if>
+          <if test="option == 'gradeName'">
+            and C.grade_name like '%' || #{keyword} || '%'
+          </if>
+          <if test="startDate != null ">
+            and A.hire_date > to_date(#{startDate}, 'yyyy-mm-dd')  
+          </if>
+          <if test="endDate != null ">
+            and A.hire_date &lt;= to_date(#{endDate}, 'yyyy-mm-dd')
+          </if>
+		order by A.hire_date desc
+	</select>
+	
+	<update id="updateEmployee" parameterType="Employee">
+		update
+			employees
+		set
+			employee_password = #{password},
+			employee_name = #{name},
+			hire_date = #{hireDate},
+			employee_salary = #{salary},
+			employee_tel = #{tel},
+			department_no = #{departmentNo},
+			manager_no = #{managerNo},
+			email = #{email},
+			image_name = #{imageName},
+			retired = #{retired},
+			grade_no = #{gradeNo}
+		where
+			employee_no = #{no}
+			
+	</update>
+	
+	<insert id="addOneEmployee" parameterType="Employee">
+		insert into employees(employee_no, employee_name,hire_date, employee_tel, department_no, grade_no, image_name, email )
+		values (employee_no_seq.nextval,#{name},#{hireDate},#{tel},#{departmentNo},#{gradeNo},#{imageName},#{email})
+	</insert>
+	
+	<insert id="addExcelEmployee" parameterType="EmployeeExcelDto">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			select
+				employee_no_seq.nextval
+			from
+				dual
+		</selectKey>
+		insert into employees
+		(employee_no, employee_name, employee_tel, email, hire_date, department_no, grade_no)
+		values
+		(#{no}, #{name}, #{tel}, #{email}, #{hireDate}, #{departmentNo},#{gradeNo}) 
+	</insert>
+	
+	<update id="deleteEmployeeByNo" parameterType="int">
+		update 
+			employees
+		set
+			retired = 'Y'
+		where
+			employee_no = #{value}
+	</update>
+	
+	<select id="getEmployeeDetailByNo" parameterType="int" resultType="EmployeeDetailDto">
+		select
+			A.employee_no			no,
+			A.employee_name			name,
+			A.hire_date				hireDate,
+			A.employee_salary		salary,
+			A.employee_tel			tel,
+			A.retired				retired,
+			A.manager_no			managerNo,
+			A.department_no			departmentNo,
+			B.department_name		departmentName,
+			B.department_location	departmentLocation,	
+			A.grade_no				gradeNo,
+			C.grade_name			gradeName,
+			A.image_name			imageName,
+			A.email					email,
+			C.grade_salary			gradeSalary
+		from
+			employees A, departments B, job_grades C
+		where
+			A.department_no	= B.department_no(+)
+			and A.grade_no = C.grade_no(+)
+			and A.employee_no = #{value}
+	</select>
+	
+	<!-- 인원현황 구하기 -->
+	<select id="getTotalStatus" parameterType="String" resultType="TotalStatusDto">
+		select
+		    (select count(*) from employees where retired = 'N' and to_char(hire_date, 'yyyy')  &lt; #{value}) incumbent,
+		    (select count(*) from employees where retired = 'N' and to_char(hire_date, 'yyyy') = #{value}) newComer,
+		    (select count(*) from employees where retired = 'N' and to_char(hire_date, 'yyyy') = #{value} and grade_no &lt;> 7) newSenior,
+		    (select count(*) from employees where retired = 'N' and to_char(hire_date, 'yyyy') = #{value} and grade_no = 7) newbie,
+		    (select count(*) from employees where retired = 'N' and to_char(hire_date, 'yyyy') &lt;= #{value}) totalStatus
+		from dual		
+	</select>
+	
+	<select id="getTotalStatusByGrade" parameterType="String" resultType="TotalStatusByGradeDto">
+		select 
+		    sum(decode(A.grade_no, 1, 1, 0)) director,
+		    sum(decode(A.grade_no, 2, 1, 0)) manager,
+		    sum(decode(A.grade_no, 3, 1, 0)) subManager,
+		    sum(decode(A.grade_no, 4, 1, 0)) seniorAssistant,
+		    sum(decode(A.grade_no, 5, 1, 0)) assistant,
+		    sum(decode(A.grade_no, 6, 1, 0)) staff,
+		    sum(decode(A.grade_no, 7, 1, 0)) intern,
+		    count(*) totalStatus
+		from employees A, job_grades B 
+		where A.grade_no = B.grade_no
+		and to_char(A.hire_date, 'yyyy') &lt;= #{value}
+		and A.retired = 'N'		
+	</select>
+	<select id="getTotalStatusByDept" parameterType="String" resultType="TotalStatusByDeptDto">
+		select nvl(B.department_name, '합계') department,
+		    count(*) incumbent,
+		    sum(
+		        case
+		            when A.grade_no &lt;&gt; 7 then 1
+		            else 0
+		        end
+		    ) fullTimer,
+		    sum(decode(A.grade_no, 7, 1, 0)) partTimer
+		from employees A, departments B 
+		where A.retired = 'N'
+		and to_char(A.hire_date, 'yyyy') &lt;= #{value}
+		and A.department_no = B.department_no
+		group by rollup(B.department_name)		
+	</select>
+</mapper>

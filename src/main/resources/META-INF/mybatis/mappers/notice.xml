@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.erp.dao.NoticeDao">
+	
+	<select id="getNoticeByNo" parameterType="int" resultType="NoticeListDto">
+		select
+			A.department_no		departmentNo,
+			A.notice_no			no,
+			A.notice_title		title,
+			A.notice_view		viewCount,
+			B.department_name	departmentName,
+			A.notice_date		noticeDate,
+			A.notice_content	content,
+			A.notice_source		source
+		from
+			NOTICES A, DEPARTMENTS B
+		where
+			A.department_no = B.department_no
+			and A.notice_no = #{value}
+		
+	</select>
+	<!-- 다음글 -->
+	<select id="nextArticle" parameterType="Notices" resultType="NoticeListDto">
+		SELECT 
+			A.NOTICE_NO					no,
+			A.NOTICE_TITLE				title,
+			A.NOTICE_DATE				noticeDate,
+			A.department_no				departmentNo,
+			A.notice_title				title,
+			A.notice_content			content,
+			A.notice_view				viewCount
+		FROM NOTICES A, DEPARTMENTS B
+		WHERE A.DEPARTMENT_NO = B.DEPARTMENT_NO
+			and A.notice_no = (select min(notice_no) 
+									 from notices 
+									 where notice_no > #{no}
+									 <if test="deptNo != 0">
+									 and department_no = (select department_no 
+									                               from notices 
+									                               where notice_no = #{no})
+									  </if>
+									 )
+			order by A.notice_no desc
+	</select>
+	<!-- 이전글 -->
+	<select id="prevArticle" parameterType="Notices" resultType="NoticeListDto">
+		SELECT 
+			A.NOTICE_NO					no,
+			A.NOTICE_TITLE				title,
+			A.NOTICE_DATE				noticeDate,
+			A.department_no				departmentNo,
+			A.notice_title				title,
+			A.notice_content			content,
+			A.notice_view				viewCount
+		FROM NOTICES A, DEPARTMENTS B
+		WHERE A.DEPARTMENT_NO = B.DEPARTMENT_NO
+			and A.notice_no = (select max(notice_no) 
+									 from notices 
+									 where notice_no &lt; #{no}
+									 <if test="deptNo != 0">
+									 and department_no = (select department_no 
+									                               from notices 
+									                               where notice_no = #{no})
+									  </if>
+									 )
+			order by A.notice_no desc
+	</select>
+	
+	
+	<update id="updateView" parameterType="int">
+		update
+			notices
+		set
+			notice_view = notice_view + 1
+		where
+			notice_no = #{value}
+	</update>
+	
+	<insert id="addNotice" parameterType="Notices">
+		insert into notices
+		(notice_no, notice_title, employee_no, notice_content, notice_view, department_no, notice_date, notice_source)
+		values
+		(ERP_NOTICE_SEQ.nextval, #{title}, null, #{content}, 0, #{deptNo}, sysdate, #{source})
+	</insert>
+	
+	<update id="updateNotice" parameterType="Notices">
+		update
+			notices
+		set
+			department_no	= #{deptNo},
+			notice_source	= #{source},
+			notice_title	= #{title},
+			notice_content	= #{content}
+		where
+			notice_no = #{no}
+	</update>
+	
+	<delete id="deleteNoticeByNo" parameterType="int">
+		delete from notices
+		where notice_no = #{no}
+	</delete>
+	
+	<select id="getMainNoticeLists" parameterType="int" resultType="NoticeListDto">
+		select
+			X.department_no		departmentNo,
+			X.notice_no			no,
+			X.notice_title		title,
+			X.notice_view		viewCount,
+			X.department_name	departmentName,
+			X.notice_date		noticeDate
+		FROM
+			(select
+				ROW_NUMBER() over (order by A.notice_date desc) rn,
+				A.department_no,
+				A.notice_no,
+				A.notice_title,
+				A.notice_view,
+				B.department_name,
+				A.notice_date
+			from
+				NOTICES A, DEPARTMENTS B
+			where
+				A.department_no = B.department_no
+				<if test="value != 0">
+					and A.department_no = #{value}
+				</if>
+			order by A.notice_date desc) X
+		WHERE
+			X.rn &lt;= 4
+	</select>
+	
+	<select id="getNoticeCount" parameterType="int" resultType="int">
+		select 
+			COUNT(*)
+		from
+			NOTICES A, DEPARTMENTS B
+		where
+			A.department_no = B.department_no
+		<if test="value != 0">
+			and A.department_no = #{deptNo}
+		</if>
+	</select>
+
+	<select id="getNoticeLists" parameterType="map" resultType="NoticeListDto">
+		select
+			X.department_no		departmentNo,
+			X.notice_no			no,
+			X.notice_title		title,
+			X.notice_view		viewCount,
+			X.department_name	departmentName,
+			X.notice_date		noticeDate
+		from
+			(select 
+				row_number() over(order by notice_no desc) as rn,
+				A.department_no		department_no,
+				A.notice_no			notice_no,
+				A.notice_title		notice_title,
+				A.notice_view		notice_view,
+				B.department_name	department_name,
+				A.notice_date		notice_Date
+			 from
+			 	notices A, departments B
+			 where
+			 	A.department_no = B.department_no
+			 	<if test="deptno != 0">
+			 		and A.department_no = #{deptno}
+			 	</if>) X
+			where
+				X.rn >= #{beginIndex}
+				and X.rn &lt;= #{endIndex}
+	</select>
+	
+	<select id="getModifyNoticeLists" parameterType="int" resultType="NoticeListDto">
+		select 
+			A.department_no		departmentNo,
+			A.notice_no			no,
+			A.notice_title		title,
+			A.notice_view		viewCount,
+			B.department_name	departmentName,
+			A.notice_date		noticeDate
+		 from
+			 notices A, departments B
+		 where
+			 A.department_no = B.department_no
+		<if test="value != 0">
+			 	and A.department_no = #{deptNo}
+		</if>
+	</select>
+</mapper> 

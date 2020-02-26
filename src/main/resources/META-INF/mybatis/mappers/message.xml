@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.jhta.erp.dao.MessageDao"> 
+	
+<select id="getMessage" parameterType="int" resultType="MessageDto">
+	select
+		   A.MESSAGE_NO				no,
+		   A.SENDER_NO			 	senderNo,	
+		   A.ISREAD				 	isRead,
+		   A.MESSAGE_CONTENT     	content,
+		   A.MESSAGE_DATE        	messageDate,
+		   A.RECEIVER_NO         	receiverNo,
+		   S.EMPLOYEE_NAME 			senderName,
+		   R.EMPLOYEE_NAME 			receiverName
+	FROM
+		   message A, employees S, employees R
+	WHERE
+		   A.sender_NO = S.EMPLOYEE_NO
+		   and A.receiver_no = R.employee_NO
+		   and R.EMPLOYEE_NO = #{value}	
+</select>
+
+<select id="detailMessage" parameterType="int" resultType="MessageDto">
+	SELECT
+	   A.MESSAGE_NO			 no,
+	   A.SENDER_NO			 senderNo,	
+	   A.ISREAD				 		isRead,
+	   A.MESSAGE_CONTENT     content,
+	   A.MESSAGE_DATE        	messageDate,
+	   A.RECEIVER_NO         	receiverNo,
+	   S.EMPLOYEE_NAME 	senderName,
+	   R.EMPLOYEE_NAME 		receiverName
+	FROM
+	   message A, employees S, employees R
+	WHERE
+	    A.sender_NO = S.EMPLOYEE_NO
+	   and A.receiver_no = R.employee_NO
+	   and A.MESSAGE_NO= #{value}	
+</select>
+
+<select id="sendMessage" parameterType="int" resultType="MessageDto">
+	select
+		   A.MESSAGE_NO				no,
+		   A.SENDER_NO			 	senderNo,	
+		   A.ISREAD				 	isRead,
+		   A.MESSAGE_CONTENT     	content,
+		   A.MESSAGE_DATE        	messageDate,
+		   A.RECEIVER_NO         	receiverNo,
+		   S.EMPLOYEE_NAME 			senderName,
+		   R.EMPLOYEE_NAME 			receiverName
+	FROM
+		   message A, employees S, employees R
+	WHERE
+		   A.sender_NO = S.EMPLOYEE_NO
+		   and A.RECEIVER_NO = R.employee_NO
+		   and S.EMPLOYEE_NO = #{value}
+	order by A.message_date desc
+</select>
+
+<select id="isReadCount" parameterType="int" resultType="int">
+	SELECT
+		count(*)
+	FROM
+		MESSAGE
+	WHERE
+		ISREAD = 'N' and receiver_no = #{value}
+</select>
+
+<select id="getMessageCount" parameterType="int" resultType="int">
+	SELECT
+		count(*)
+	FROM
+		message
+	WHERE
+		sender_no = #{value}
+</select>
+
+<select id="sendMessageCount" parameterType="int" resultType="int">
+	SELECT
+		count(*)
+	FROM
+		message
+	WHERE
+		receiver_no = #{value}
+</select>
+
+<update id="isRead" parameterType="int">
+	update
+		message
+	set
+		ISREAD = 'Y'
+	where
+		message_no = #{value}
+		
+</update>
+
+<insert id="sendEmail" parameterType="MessageDto">
+	insert into message
+	(message_no, sender_no, message_content, message_date, receiver_no)
+	values
+	(erp_message_seq.nextval, #{senderNo}, #{content}, sysdate, #{receiverNo} )	
+</insert>
+
+<delete id="deleteMessage" parameterType="int">
+	delete from message
+	where message_no = #{value}
+</delete>
+</mapper>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.erp.dao.FactoryOrderDao">
+
+	<insert id="insertOrder" parameterType="FactoryOrderAddForm" >
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			select FACTORY_ORDER_NO_SEQ.nextval from dual
+		</selectKey>
+		insert into factory_orders
+		(FACTORY_ORDER_NO, EMPLOYEE_NO, STORAGE_NO)
+		values
+		(#{no}, #{employeeNo}, #{storageNo})
+	</insert>
+	
+	<insert id="insertOrderItem" parameterType="FactoryOrderItem">
+		insert into factory_order_items
+		(FACTORY_ORDER_NO, PRODUCT_NO, AMOUNT)
+		values
+		(#{orderNo}, #{productNo}, #{amount})
+	</insert> 
+	
+	<select id="getFactoryOrderByNo" parameterType="int" resultType="FactoryOrder">
+		select
+			FACTORY_ORDER_NO		as no,
+			REQUEST_DATE			as requestDate,
+			FACTORY_ORDER_STATUS	as status,
+			EMPLOYEE_NO				as employeeNo,
+			STORAGE_NO				as storageNo,
+			RESPONSE_DATE			as responseDate
+		from
+			factory_orders
+		where
+			factory_order_no = #{value}
+	</select>
+	
+	<select id="getFactoryOrderItemsByOrderNo" parameterType="int" resultType="FactoryOrderItemDto">
+		select
+			A.factory_order_no	as factoryOrderNo,
+			A.product_no		as productNo,
+			B.product_name		as productName,
+			B.product_price		as productPrice,
+			B.category_no		as categoryNo,
+			C.category_name		as categoryName,
+			A.amount			as amount
+		from
+			factory_order_items A, products B, categories C
+		where
+			A.product_no = B.product_no
+			and B.category_no = C.category_no
+			and A.factory_order_no = #{value}
+	</select>
+	
+	<update id="signFactoryOrder" parameterType="int">
+		update
+			factory_orders
+		set
+			factory_order_status 	= '주문완료',
+			response_date			= sysdate
+		where
+			factory_order_no = #{value}	
+	</update>
+</mapper> 

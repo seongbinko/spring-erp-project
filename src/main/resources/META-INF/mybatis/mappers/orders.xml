@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.erp.dao.OrderDao">
+	
+	<sql id="order_columns">
+		order_no				as no,
+		product_no				as productNo,
+		store_no				as storeNo,
+		order_amount			as amount,
+		order_request_date		as requestDate,
+		order_response_date		as responseDate,
+		order_complete			as complete,
+		employee_no				as employeeNo
+	</sql>
+
+	<insert id="insertOrder" parameterType="OrderRegisterForm">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			select order_no_seq.nextval from dual
+		</selectKey>
+		insert into orders
+		(order_no, store_no, employee_no)
+		values
+		(#{no}, #{storeNo}, #{employeeNo})
+	</insert>
+	
+	<insert id="insertOrderItem" parameterType="OrderItem">
+		insert into order_items
+		(order_no, product_no, amount)
+		values
+		(#{orderNo}, #{productNo}, #{amount})
+	</insert> 
+	
+	<select id="getOrderByNo" parameterType="int" resultType="Order">
+		select
+			<include refid="order_columns" />
+		from
+			orders
+		where
+			order_no = #{value}
+	</select>
+	 
+ 	<update id="updateOrder" parameterType="Order">
+ 		update
+ 			orders
+ 		set
+ 			order_amount			= #{name}
+			order_request_date		= #{request_date}
+			order_response_date		= #{response_date}
+			order_complete			= #{order_complete}
+ 	</update>
+
+ 	<delete id="deleteOrder" parameterType="int">
+ 		delete from
+ 			orders
+ 		where
+ 			order_no = #{value}
+ 	</delete>
+ 	
+ 	<select id="getAllOrderProduct" parameterType="int" resultType="OrderProductDto">
+		select
+			A.PRODUCT_NO				as no,
+			A.PRODUCT_NAME				as name,
+			A.PRODUCT_PRICE				as price,
+			A.PRODUCT_CREATE_DATE		as createDate,
+			A.CATEGORY_NO				as categoryNo,
+			B.CATEGORY_NAME				as categoryName,
+			B.UPPER_CATEGORY_NO			as upperCategoryNo,
+			C.CATEGORY_NAME             as upperCategoryName
+		from
+			products A, categories B, CATEGORIES C
+		where
+			A.CATEGORY_NO = B.CATEGORY_NO
+			and B.UPPER_CATEGORY_NO = C.category_no
+			and A.PRODUCT_NO = #{value}
+	</select>
+	
+	<update id="signOrder" parameterType="int">
+		update
+			orders
+		set
+			order_complete 	= '발주완료',
+			order_response_date	= sysdate
+		where
+			order_no = #{value}	
+	</update>
+	
+	<select id="getOrderItemsByOrderNo" parameterType="int" resultType="OrderItem">
+		select
+			ORDER_NO		as orderNo,
+			PRODUCT_NO		as productNo,
+			AMOUNT			as amount
+		from
+			order_items
+		where
+			order_no = #{value}
+	</select>
+	
+	<select id="getOrderItemDetailsByOrderNo" parameterType="int" resultType="OrderItemDto">
+		select
+			A.order_no 			as orderNo,
+			A.product_no		as productNo,
+			B.product_name		as productName,
+			B.product_price		as productPrice,
+			B.category_no		as categoryNo,
+			C.category_name		as categoryName,
+			A.amount			as amount
+		from
+			order_items A, products B, categories C
+		where
+			A.product_no = B.product_no
+			and B.category_no = C.category_no
+			and A.order_no = #{value}
+	</select>
+	
+	<select id="getOrderByOrderNo" parameterType="int" resultType="Order">
+		select
+			order_no				as no,
+			store_no				as storeNo,
+			order_request_date		as requestDate,
+			order_response_date		as responseDate,
+			order_complete			as complete,
+			employee_no				as employeeNo
+		from
+			orders
+		where
+			order_no = #{value}
+	</select>
+ 
+</mapper> 

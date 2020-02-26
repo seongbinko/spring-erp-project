@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.jhta.erp.dao.DepartmentDao"> 
+
+	<sql id="department_info">
+		department_no			no,
+		department_name			name,
+		department_location		location		
+	</sql>
+	
+	<select id="getAllDepartments" resultType="Department">
+		select
+			<include refid="department_info"/>
+		from
+			departments
+		order by department_no	
+	</select>
+	
+	<select id="getDepartmentByOption" parameterType="map" resultType="Department">
+		select
+			<include refid="department_info"/>
+		from
+			departments
+		<where>
+			<if test="option == 'no'">
+				department_no like '%' || #{keyword} 
+			</if>
+			<if test="option == 'name'">
+				and department_name like '%' || #{keyword} || '%'
+			</if>
+			<if test="option == 'location'">
+				and department_location like '%' || #{keyword} || '%'
+			</if>
+		</where>
+		order by department_no	
+	</select>
+	
+	<insert id="addDepartment" parameterType="Department">
+		insert into departments(department_no, department_name, department_location)
+		values(department_no_seq.nextval, #{name}, #{location})
+	</insert>
+	
+	<delete id="deleteDepartmentByNo" parameterType="int">
+		delete from departments
+		where department_no = #{value}
+	</delete>
+	
+	<update id="updateDepartment" parameterType="Department">
+		update
+			departments
+		set
+			department_no 	= #{no},
+			department_name = #{name},
+			department_location = #{location}
+		where 
+			department_no = #{no}
+	</update>
+	
+</mapper>

@@ -1,0 +1,4 @@
+employeeImage.source.directory=c:/projects/spring_workspace/finalproject/src/main/webapp/resources/images/employee
+employeeExcel.source.directory=c:/projects/spring_workspace/finalproject/src/main/webapp/resources/excel/employee
+employeeSource.source.directory=c:/projects/spring_workspace/finalproject/src/main/webapp/resources/source/employee
+

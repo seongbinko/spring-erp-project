@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.erp.dao.HrHistoryDao">
+	<sql id="HrHistory_info">
+		hr_history_no				no,
+		hr_history_date				historyDate,
+		hr_history_type				historyType,
+		employee_no					employeeNo,
+		employee_name				employeeName,
+		prev_department_no			prevDepartmentNo,
+		prev_department_name		prevDepartmentName,
+		prev_grade_no				prevGradeNo,
+		prev_grade_name				prevGradeName,
+		department_no				departmentNo,
+		department_name				departmentName,
+		grade_no					gradeNo,
+		grade_name					gradeName
+	</sql>
+	
+	<insert id="addHrHistory" parameterType="HrHistory">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			select
+				hr_history_no_seq.nextval
+			from
+				dual			
+		</selectKey>
+		insert into hr_histories
+		(hr_history_no, hr_history_date, hr_history_type, employee_no, employee_name,
+			prev_department_no, prev_department_name, prev_grade_no, prev_grade_name,
+			department_no, department_name, grade_no, grade_name)
+		values
+		(#{no},#{historyDate},#{historyType},#{employeeNo},#{employeeName},
+		#{prevDepartmentNo},#{prevDepartmentName},#{prevGradeNo},#{prevGradeName},
+		#{departmentNo},#{departmentName},#{gradeNo},#{gradeName})
+	</insert>
+	
+	<select id="getTotalPageSize" parameterType="map" resultType="int">
+		select
+			count(*)
+		from 
+			hr_histories
+		<where>
+			<if test="option == 'no'">
+				hr_history_no like '%' ||  #{keyword}		
+			</if>
+			<if test="option == 'type'">
+				and hr_history_type like '%' || #{keyword} || '%'
+			</if>
+			<if test="option == 'employeeNo'">
+				and employee_no like '%' ||  #{keyword}
+			</if>
+			<if test="option == 'employeeName'">
+				and employee_name like '%' || #{keyword} || '%'
+			</if>
+			<if test="option == 'prevDepartmentName'">
+				and prev_department_name like '%' || #{keyword} || '%'
+			</if>
+			<if test="option == 'departmentName'">
+				and department_name like '%' || #{keyword} || '%'
+			</if>
+			<if test="option == 'prevGradeName'">
+				and prev_grade_name like '%' || #{keyword} || '%'
+			</if>
+			<if test="option == 'gradeName'">
+				and grade_name like '%' || #{keyword} || '%'
+			</if>
+	        <if test="startDate != null ">
+	            and hr_history_date > to_date(#{startDate}, 'yyyy-mm-dd')  
+	        </if>
+	        <if test="endDate != null ">
+	            and hr_history_date &lt;= to_date(#{endDate}, 'yyyy-mm-dd')
+	        </if>
+		</where>
+	</select>
+	
+	<select id="searchHrHistories" parameterType="map" resultType="HrHistory">
+		select 
+			X.no					no,
+			X.historyDate			historyDate,
+			X.historyType			historyType,
+			X.employeeNo			employeeNo,
+			X.employeeName			employeeName,
+			X.prevDepartmentNo		prevDepartmentNo,
+			X.prevDepartmentName	prevDepartmentName,
+			X.prevGradeNo			prevGradeNo,
+			X.prevGradeName			prevGradeName,
+			X.departmentNo			departmentNo,
+			X.departmentName		departmentName,
+			X.gradeNo				gradeNo,
+			X.gradeName				gradeName
+		from(select  
+		       	row_number() over (order By hr_history_date desc) as rn,
+		       	<include refid="HrHistory_info"/>
+		     from 
+		        hr_histories
+			<where>
+				<if test="option == 'no'">
+					hr_history_no like '%' ||  #{keyword}		
+				</if>
+				<if test="option == 'type'">
+					and hr_history_type like '%' || #{keyword} || '%'
+				</if>
+				<if test="option == 'employeeNo'">
+					and employee_no like '%' ||  #{keyword}
+				</if>
+				<if test="option == 'employeeName'">
+					and employee_name like '%' || #{keyword} || '%'
+				</if>
+				<if test="option == 'prevDepartmentName'">
+					and prev_department_name like '%' || #{keyword} || '%'
+				</if>
+				<if test="option == 'departmentName'">
+					and department_name like '%' || #{keyword} || '%'
+				</if>
+				<if test="option == 'prevGradeName'">
+					and prev_grade_name like '%' || #{keyword} || '%'
+				</if>
+				<if test="option == 'gradeName'">
+					and grade_name like '%' || #{keyword} || '%'
+				</if>
+		        <if test="startDate != null ">
+		            and hr_history_date > to_date(#{startDate}, 'yyyy-mm-dd')  
+		        </if>
+		        <if test="endDate != null ">
+		            and hr_history_date &lt;= to_date(#{endDate}, 'yyyy-mm-dd')
+		        </if>
+			</where>) X
+		where 
+		    X.rn >= #{beginIndex}
+		    and X.rn &lt;= #{endIndex}
+	</select>
+</mapper>

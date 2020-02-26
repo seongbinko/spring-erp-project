@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.erp.dao.AttendanceDao">
+	
+	<sql id="Attendance_Info">
+		attendance_no		no, 
+		in_time				inTime, 
+		out_time 			outTime,
+		attendance_status  	status,
+		employee_no			employeeNo,
+		employee_name		employeeName, 
+		overtime_amount		overtimeAmount,
+		latetime_amount		latetimeAmount, 
+		attendance_date		attendanceDate,
+		fixed_status		fixedStatus
+	</sql>
+	
+	<insert id="addEmployeeAttendance" parameterType="Attendance">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			select
+				attendance_no_seq.nextval
+			from
+				dual
+		</selectKey>
+		insert into Attendances
+		(attendance_no, in_time, employee_no, employee_name, attendance_date)
+		values
+		(#{no}, #{inTime}, #{employeeNo}, #{employeeName}, to_char(#{attendanceDate}, 'yyyy-mm-dd'))
+	</insert>
+	
+	<select id="getAttendanceTodayByEmpNo" parameterType="int" resultType="Attendance">
+		select
+			<include refid="Attendance_Info"/>
+		from
+			attendances
+		where
+			employee_no = #{employeeNo}
+			and attendance_date = to_char(sysdate, 'yyyy-mm-dd')
+	</select>
+	
+	<update id="updateEmployeeAttendance" parameterType="Attendance">
+		update 
+			attendances
+		set
+			out_time 		  =		#{outTime},
+			attendance_status =		#{status},
+			overtime_amount	  =		#{overtimeAmount},
+			latetime_amount	  =     #{latetimeAmount},
+			fixed_status      =     #{fixedStatus}
+		where
+			attendance_no = #{no}
+	</update>
+	
+	<select id="getTotalPageSize" parameterType="map" resultType="int">
+		select
+			count(*)
+		from
+			attendances
+		<where>
+			<if test="option == 'no'">
+				attendance_no like '%' ||  #{keyword}		
+			</if>
+			<if test="option == 'employeeNo'">
+				and employee_no like '%' ||  #{keyword}
+			</if>
+			<if test="option == 'employeeName'">
+				and employee_name like '%' || #{keyword} || '%'
+			</if>
+	        <if test="startDate != null ">
+	            and attendance_date > to_date(#{startDate}, 'yyyy-mm-dd')  
+	        </if>
+	        <if test="endDate != null ">
+	            and attendance_date &lt;= to_date(#{endDate}, 'yyyy-mm-dd')
+	        </if>
+		</where>
+	</select>
+	<select id="searchAttendances" parameterType="map" resultType="Attendance">
+		select
+			X.no				no,
+			X.inTime			inTime,
+			X.outTime			outTime,
+			X.status			status,
+			X.employeeNo		employeeNo,
+			X.employeeName		employeeName,
+			X.overtimeAmount	overtimeAmount,
+			X.latetimeAmount    latetimeAmount,
+			X.attendanceDate	attendanceDate,
+			X.fixedStatus		fixedStatus
+		from 
+			(select
+				row_number() over (order by attendance_date desc) as rn,
+				<include refid="Attendance_Info"/>
+			from
+				attendances
+			<where>
+				<if test="option == 'no'">
+					attendance_no like '%' ||  #{keyword}		
+				</if>
+				<if test="option == 'employeeNo'">
+					and employee_no like '%' ||  #{keyword}
+				</if>
+				<if test="option == 'employeeName'">
+					and employee_name like '%' || #{keyword} || '%'
+				</if>
+		        <if test="startDate != null">
+		            and attendance_date > to_date(#{startDate}, 'yyyy-mm-dd')  
+		        </if>
+		        <if test="endDate != null">
+		            and attendance_date &lt;= to_date(#{endDate}, 'yyyy-mm-dd')
+		        </if>			
+			</where>) X
+		where 
+		    X.rn >= #{beginIndex}
+		    and X.rn &lt;= #{endIndex}
+	</select>
+	
+	<!-- 급여계산 프로세스 -->
+	<select id="getAllAttendanceByStatus" parameterType="String" resultType="Attendance">
+		select
+			<include refid="Attendance_Info"/>
+		from
+			attendances
+		where fixed_status = 'N'
+		and to_char(attendance_date, 'yyyy-mm') = #{value}
+		order by attendance_no
+	</select>
+</mapper> 
