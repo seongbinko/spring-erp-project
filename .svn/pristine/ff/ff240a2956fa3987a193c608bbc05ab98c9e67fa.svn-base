@@ -1,9 +1,0 @@
-package kr.co.jhta.erp.service;
-
-import kr.co.jhta.erp.form.InternalMobilityAddForm;
-
-public interface HrhistoryService {
-
-	void addInternalMobility(InternalMobilityAddForm forms);
-
-}

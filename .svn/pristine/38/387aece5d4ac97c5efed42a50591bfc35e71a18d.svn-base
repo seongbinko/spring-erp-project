@@ -1,9 +1,0 @@
-package kr.co.jhta.erp.service;
-
-import kr.co.jhta.erp.vo.PayrollTable;
-
-public interface PayrollTableService {
-
-	void addPayrollTable(PayrollTable payrollTable);
-
-}
