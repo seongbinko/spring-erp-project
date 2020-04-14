@@ -2,5 +2,5 @@
     pageEncoding="UTF-8"%>
 
 <% 
-	response.sendRedirect("/home.erp"); //test 
+	response.sendRedirect("/home.erp");
 %>
