@@ -2,6 +2,8 @@
 # Created by https://www.gitignore.io/api/java,maven,windows,eclipse
 # Edit at https://www.gitignore.io/?templates=java,maven,windows,eclipse
 
+# Project exclude paths
+.idea
 ### Eclipse ###
 .metadata
 bin/
