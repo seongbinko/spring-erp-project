@@ -107,7 +107,6 @@
 	$("#intime-btn").click(function(){
 		var intime = new Date();
 		$("#times").val(intime.getTime());
-		
 		$("#attendanceForm").attr('action', 'intimeUser.erp');
 		$("#attendanceForm").submit();
 	})

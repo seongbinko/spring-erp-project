@@ -159,11 +159,14 @@
 		day = day >= 10 ? day : '0' + day;             
 		return  year + '-' + month + '-' + day;
 	}
-	
+	// 시간에 0표기 수정
 	function getFormatTime(date) {
-		var hour = date.getHours();
-		var min = date.getMinutes();
-		var seconds = date.getSeconds();
+		var temp1 = date.getHours();
+		var hour = temp1 > 9 ? temp1 : "0" + temp1;
+		var temp2 = date.getMinutes();
+		var min =  temp2 > 9 ? temp2 : "0" + temp2;
+		var temp3 = date.getSeconds();
+		var seconds = temp3 > 9 ? temp3 : "0" + temp3;
 		
 		return hour + ':' + min + ':' + seconds
 	}

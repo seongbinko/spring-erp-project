@@ -44,9 +44,9 @@
 								<td>{{dept.location}}</td>
 								<td>
 									<form v-bind:id="'delete-department-' + dept.no">
-										<button id="delete-department-btn" type="button" class="btn btn-default" @click="openEmployees(dept)">사원목록</button>
-										<button id="modify-department-btn" type="button" class="btn btn-default"  @click="openModal(dept)"  >수정</button>
-										<button id="delete-department-btn" type="button" class="btn btn-warning" @click="deleteFunction(dept)">삭제</button>
+										<button  type="button" class="btn btn-default" @click="openEmployees(dept)">사원목록</button>
+										<button  type="button" class="btn btn-default"  @click="openModal(dept)"  >수정</button>
+										<button  type="button" class="btn btn-warning" @click="deleteFunction(dept)">삭제</button>
 										<input type="hidden" name="no" v-model="dept.no">
 									</form>
 								</td>
@@ -81,7 +81,7 @@
 										<input class="form-control" type="text"  id="map1-address" placeholder="주소" name="location">
 							    	 </div>
 							    	 <div class="col-sm-2">
-							    	 	<input id="search-location" class="btn btn-default" type="button" onclick="drawMap('map1', 'map1-address')" value="주소 검색"><br>
+							    	 	<input class="btn btn-default" type="button" onclick="drawMap('map1', 'map1-address')" value="주소 검색"><br>
 							    	 </div>
 							  	</div>
 								<div id="map1" style="width:550px;height:470px;margin-top:10px;display:none; left: 155px;"></div>
@@ -122,7 +122,7 @@
 								<input class="form-control" type="text"  id="map2-address" placeholder="주소" name="location" v-model="dept.location">
 					    	 </div>
 					    	 <div class="col-sm-2">
-					    	 	<input id="search-location" class="btn btn-default pull-right" type="button" onclick="drawMap('map2', 'map2-address')" value="주소 검색"><br>
+					    	 	<input class="btn btn-default pull-right" type="button" onclick="drawMap('map2', 'map2-address')" value="주소 검색"><br>
 					    	 </div>
 					  	</div>
 						<div id="map2" style="width:550px;height:470px;margin-top:10px;display:none; left: 155px;"></div>	
@@ -193,6 +193,7 @@
 				this.dept = dept;
 				$("#delete-department-"+dept.no).attr('action', 'deleteDepartment.erp');
 				$("#delete-department-"+dept.no).submit();
+
 			},
 			getAllDepartments: function() {
 				$.getJSON('/hr/getDepartments.erp', function(result) {app.departments=result;})
@@ -200,20 +201,19 @@
 			openEmployees: function(dept){
 				this.dept = dept;
 				var no = dept.no;
-				console.log(no);
-				
-				
+
 				$.getJSON('/hr/getEmployeesByDepartmentNo.erp', {no:no}, function(result) {
 					app.employees=result;
 				})
-			
-				
+
 				$("#employee-list-modal").modal("show");
 			}
 			
 			
 		}
 	});
+
+
 	app.getAllDepartments();
 	
 	$('#add-department-button').click(function(){
