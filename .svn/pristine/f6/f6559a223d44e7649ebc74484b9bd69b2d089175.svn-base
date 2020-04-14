@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.4" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="kr.co.jhta.erp.vo.Employee" project="finalproject" 
+    file="/finalproject/src/main/java/kr/co/jhta/erp/vo/Employee.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="783" width="160" x="135" y="-237"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="kr.co.jhta.erp.vo.jobGrade" project="finalproject" 
+    file="/finalproject/src/main/java/kr/co/jhta/erp/vo/jobGrade.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="261" width="157" x="335" y="-237"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="kr.co.jhta.erp.vo.Attendance" project="finalproject" 
+    file="/finalproject/src/main/java/kr/co/jhta/erp/vo/Attendance.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="369" width="142" x="532" y="-237"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="kr.co.jhta.erp.vo.FactoryOrder" project="finalproject" 
+    file="/finalproject/src/main/java/kr/co/jhta/erp/vo/FactoryOrder.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="369" width="148" x="714" y="-237"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="kr.co.jhta.erp.vo.HrHistory" project="finalproject" 
+    file="/finalproject/src/main/java/kr/co/jhta/erp/vo/HrHistory.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="783" width="204" x="902" y="-237"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="kr.co.jhta.erp.vo.ProductApprovalType" project="finalproject" 
+    file="/finalproject/src/main/java/kr/co/jhta/erp/vo/ProductApprovalType.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="207" width="145" x="1146" y="-237"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="kr.co.jhta.erp.vo.Management" project="finalproject" 
+    file="/finalproject/src/main/java/kr/co/jhta/erp/vo/Management.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="369" width="142" x="1331" y="-237"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="kr.co.jhta.erp.vo.Notices" project="finalproject" 
+    file="/finalproject/src/main/java/kr/co/jhta/erp/vo/Notices.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="513" width="146" x="1513" y="-237"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="kr.co.jhta.erp.vo.Department" project="finalproject" 
+    file="/finalproject/src/main/java/kr/co/jhta/erp/vo/Department.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="243" width="141" x="1699" y="-237"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="kr.co.jhta.erp.vo.HrPagination" project="finalproject" 
+    file="/finalproject/src/main/java/kr/co/jhta/erp/vo/HrPagination.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="351" width="162" x="1880" y="-237"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="kr.co.jhta.erp.vo.ProductControl" project="finalproject" 
+    file="/finalproject/src/main/java/kr/co/jhta/erp/vo/ProductControl.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="423" width="148" x="2082" y="-237"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="kr.co.jhta.erp.vo.StoreStatistic" project="finalproject" 
+    file="/finalproject/src/main/java/kr/co/jhta/erp/vo/StoreStatistic.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="477" width="159" x="2270" y="-237"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="kr.co.jhta.erp.vo.StoreStock" project="finalproject" 
+    file="/finalproject/src/main/java/kr/co/jhta/erp/vo/StoreStock.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="261" width="133" x="2469" y="-237"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="kr.co.jhta.erp.vo.Category" project="finalproject" 
+    file="/finalproject/src/main/java/kr/co/jhta/erp/vo/Category.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="261" width="169" x="2642" y="-237"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="kr.co.jhta.erp.vo.ProductPagination" project="finalproject" 
+    file="/finalproject/src/main/java/kr/co/jhta/erp/vo/ProductPagination.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="333" width="173" x="2851" y="-237"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="kr.co.jhta.erp.vo.Store" project="finalproject" 
+    file="/finalproject/src/main/java/kr/co/jhta/erp/vo/Store.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="477" width="142" x="3064" y="-237"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="17" language="java" name="kr.co.jhta.erp.vo.Message" project="finalproject" 
+    file="/finalproject/src/main/java/kr/co/jhta/erp/vo/Message.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="405" width="148" x="3246" y="-237"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="18" language="java" name="kr.co.jhta.erp.vo.AsService" project="finalproject" 
+    file="/finalproject/src/main/java/kr/co/jhta/erp/vo/AsService.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="369" width="148" x="3434" y="-237"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="kr.co.jhta.erp.vo.Product" project="finalproject" 
+    file="/finalproject/src/main/java/kr/co/jhta/erp/vo/Product.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="405" width="160" x="3622" y="-237"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="20" language="java" name="kr.co.jhta.erp.vo.Order" project="finalproject" 
+    file="/finalproject/src/main/java/kr/co/jhta/erp/vo/Order.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="531" width="165" x="3822" y="-237"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="21" language="java" name="kr.co.jhta.erp.vo.ProductApproval" project="finalproject" 
+    file="/finalproject/src/main/java/kr/co/jhta/erp/vo/ProductApproval.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="639" width="165" x="4027" y="-237"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

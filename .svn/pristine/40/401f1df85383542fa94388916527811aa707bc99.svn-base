@@ -1,0 +1,56 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<title>인원현황</title>
+  	<meta charset="UTF-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  	<script src="https://unpkg.com/vue@2.5.13/dist/vue.js"></script>
+  	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<%@include file="../common/nav.jsp" %>
+<%@include file="hr_sidebar.jsp" %>
+<div class="container" id="app">
+	<div class="page-header">
+		<h1 style="text-align: center;"><strong>인원 현황</strong></h1>
+	</div>
+	<div>
+		<table class="table table-bordered" style="text-align: center;">
+			<thead>
+				<tr>
+					<td>일자</td>
+					<td>입사자</td>
+					<td>입사인원</td>
+					<td>퇴사자</td>
+					<td>퇴사인원</td>
+					<td>총인원</td>
+				</tr>
+			</thead>
+			<tbody>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</body>
+<script type="text/javascript">
+	var app = new Vue({
+		el:"#app",
+		data: {
+			
+		}
+	})
+</script>
+</html>

@@ -1,0 +1,131 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<title>인사발령조회</title>
+  	<meta charset="UTF-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  	<script src="https://unpkg.com/vue@2.5.13/dist/vue.js"></script>
+  	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body>
+<%@include file="../common/nav.jsp" %>
+<%@include file="hr_sidebar.jsp" %>
+<div class="container" id="app">
+	<div class="page-header">
+		<h1>인사발령 조회</h1>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="row">
+				<div class="col-sm-4">
+				 	<div><h4>인사발령 리스트</h4></div>
+				</div>
+				<div class="col-sm-8">
+					<div class="row">
+						<div class="col-sm-4">
+							<div class="form-group">
+								<select id="check-option" class="form-control" v-model="param.option">
+									<option value="option" disabled selected >검색옵션</option>
+									<option value="no" ${param.opt eq 'no' ? 'selected' :''}>발령번호</option>
+									<option value="type" ${param.opt eq 'type' ? 'selected' :''} >발령구분</option>
+									<option value="employeeNo" ${param.opt eq 'employeeNo' ? 'selected' :''} >사원번호</option>
+									<option value="employeeName" ${param.opt eq 'employeeName' ? 'selected' :''} >성함</option>
+									<option value="prevDepartmentName" ${param.opt eq 'prevDepartmentNo' ? 'selected' :''}>이전부서</option>
+									<option value="departmentName" ${param.opt eq 'departmentName' ? 'selected' :''}>부서</option>
+									<option value="prevGradeName" ${param.opt eq 'prevGradeNo' ? 'selected' :''}>이전직급</option>
+									<option value="gradeName" ${param.opt eq 'gradeName' ? 'selected' :''}>직급</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<input  id="check-keyword" type="text" class="form-control" name="keyword" value="${param.keyword }" v-model="param.keyword">
+						</div>
+						<div class="col-sm-2">
+							<button type="button" class="btn btn-primary" id="search-keyword">검색</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<br/>
+			<div>
+				<form id="delete-form">
+					<table id="hr-list-table" class="table table-bordered table-hover">
+						<thead>
+							<tr>
+								<th>발령번호</th>
+								<th>일자</th>
+								<th>발령구분</th>								
+								<th>성명</th>
+								<th>발령부서</th>
+								<th>발령직급</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr v-for="hr in hrHistories">
+								<td>{{hr.no}}</td>
+								<td>{{hr.historyDate}}</td>
+								<td>{{hr.historyType}}</td>
+								<td>{{hr.employeeName}}</td>
+								<td v-if="hr.prevDepartmentName == hr.departmentName">{{hr.prevDepartmentName}} (변동없음)</td>
+								<td v-else>{{hr.prevDepartmentName}} -> {{hr.departmentName}}</td>
+								<td v-if="hr.prevGradeName == hr.gradeName">{{hr.prevGradeName}} (변동없음)</td>
+								<td v-else>{{hr.prevGradeName}} -> {{hr.gradeName}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</form>
+			</div>	
+			<div>
+				<div>
+					<button id="delete-employee" type="button" class="btn btn-default " >선택삭제</button>
+					<button type="button" class="btn btn-default ">Excel 다운</button>
+					<div class="pull-right">
+						<div class="dropdown">
+			  				<button class="btn btn-default" type="button">날짜입력</button>
+							<input id="start-date" type="date" class="btn btn-default" value="2010-10-10" v-model="param.startDate"/> 
+							<input id="end-date" type="date" class="btn btn-default" v-model="param.endDate"/>
+							<button id="search-date" type="button" class="btn btn-primary">검색</button>
+						</div>					
+					</div>
+				</div>
+			</div>
+	 	</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript">
+	var app = new Vue({
+		el:"#app",
+		data: {
+			param: {
+				option:"option",
+				keyword: "",
+				startDate: "",
+				endDate: ""
+			},
+			hrHistories: [],
+			pagination: [],
+			historyDate: {}
+		},
+ 		methods: {
+ 			searchHrHistories: function(param) {
+				$.getJSON('/hr/searchHrHistories.erp',param,function(result){
+					app.hrHistories = result.hrHistories;
+					app.pagination = result.pagination;
+					
+				})
+			}
+ 		}
+	});
+	
+	
+</script>
+</html>

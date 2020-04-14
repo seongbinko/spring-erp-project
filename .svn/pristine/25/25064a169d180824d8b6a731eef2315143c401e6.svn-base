@@ -1,0 +1,8 @@
+package kr.co.jhta.erp.dto;
+
+
+public class FactoryOrderDto {
+
+	
+	
+}

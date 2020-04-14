@@ -1,0 +1,82 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title>발주(구매) 신규등록 | JHTA ERP</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+	<style type="text/css">
+		.order-new-add th {
+		 	background: #f7f7f7;
+		 	width: 120px;
+		 	height: 45px;
+		}
+		.order-new-add td {
+			width: 320px;
+		}
+		
+	</style>
+</head>
+<body>
+<div class="container">
+	<div class="page-header">
+		<h1>발주처조회</h1>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<form id="" class="form-horizontal" action="" method="post" enctype="">
+			  	<div class="form-group">
+		   			<label class="control-label col-sm-2" for="serach-store-no">발주처명</label>
+			   		<div class="col-sm-10">
+			    		<div class="input-group">
+				    		<input class="form-control" type="text" id="store-no" name="storeName" readonly>
+				    		<div class="input-group-btn">
+						      	<button id="serach-store-no" class="btn btn-default" type="button">
+						        	<i class="glyphicon glyphicon-search" id="store-name"></i>
+						      	</button>
+						    </div>
+				    	 </div>
+			    	 </div>
+			  	</div>
+			  	<div class="form-group">
+			   		<label class="control-label col-sm-2" for="serach-store-no">발주담당자</label>
+			   		<div class="col-sm-10">
+			    		<input type="text" class="form-control" name="storeEmp" placeholder="ex) 김아무개" readonly>
+			    	 </div>
+			  	</div> 
+			  	<div class="form-group">
+			   		<label class="control-label col-sm-2">전화번호</label>
+			   		<div class="col-sm-10">
+			    		<input type="tel" class="form-control" name="storeTel" placeholder="ex) 02-1234-5678" readonly>
+			    	 </div>
+			  	</div>
+			  	<div class="form-group">
+			   		<label class="control-label col-sm-2">주소</label>
+			   		<div class="col-sm-10">
+			    		<input class="form-control" type="text" id="store-address" name="storeAddress" readonly>
+			    	 </div>
+			  	</div>
+			  	
+	  			<div class="form-group">
+	    			<div class="col-sm-12" style="text-align: right;">
+	      				<button type="button" id="" class="btn btn-info">등록</button>
+	      				<button type="reset" class="btn btn-default" onclick="javascript:window.close()">취소</button>
+	    			</div>
+	    		</div>    		
+			</form>	
+		</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript">
+	$("#store-name").click(function() {
+		window.open("/store/###.erp", "###", "width=770, height=440");
+		
+	});
+</script> 
+</html>

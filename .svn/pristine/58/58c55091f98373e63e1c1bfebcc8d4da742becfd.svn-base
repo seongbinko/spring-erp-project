@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.erp.dao.StoreStockDao">
+	
+	<select id="getStoreStockDetailsByStoreNo" parameterType="int" resultType="StoreStockDto">
+		select
+			A.PRODUCT_NO			as productNo,
+			B.PRODUCT_NAME			as productName,
+			B.PRODUCT_PRICE			as productPrice,
+			C.CATEGORY_NAME			as categoryName,
+			B.PRODUCT_CREATE_DATE	as ProductCreateDate,
+			A.STORE_STOCK_AMOUNT	as amount
+		from
+			store_stocks A, products B, CATEGORIES C
+		where
+			A.PRODUCT_NO = B.PRODUCT_NO
+			and B.CATEGORY_NO = C.CATEGORY_NO
+			and store_no = #{value}
+		order by B.PRODUCT_NAME asc
+	</select>
+	
+	<select id="getProductStockDetailsByProductNo" parameterType="int" resultType="ProductStockDto">
+		SELECT
+			A.PRODUCT_NO			as productNo,
+			A.PRODUCT_NAME			as productName,
+			A.PRODUCT_PRICE			as productPrice,
+			A.PRODUCT_CREATE_DATE	as productCreateDate,
+			A.CATEGORY_NO			as categoryNo,
+			D.CATEGORY_NAME			as CATEGORY_NAME,
+			B.STORE_NO				as storeNo,
+			C.STORE_NAME			as storeName,
+			C.STORE_ADDRESS			as storeAddress,
+			C.STORE_TEL				as storeTel,
+			B.STORE_STOCK_AMOUNT	as amount
+		FROM
+			PRODUCTS A, STORE_STOCKS B, STORES C, CATEGORIES D
+		WHERE
+			A.PRODUCT_NO = B.PRODUCT_NO
+			and B.STORE_NO = C.STORE_NO
+			and A.CATEGORY_NO = D.CATEGORY_NO
+			and A.product_no = #{value}
+	</select>
+	
+	<select id="getStoreStockDetail" parameterType="map" resultType="StoreStockDto">
+		select
+			A.PRODUCT_NO			as productNo,
+			B.PRODUCT_NAME			as productName,
+			B.PRODUCT_PRICE			as productPrice,
+			C.CATEGORY_NAME			as categoryName,
+			B.PRODUCT_CREATE_DATE	as ProductCreateDate,
+			A.STORE_STOCK_AMOUNT	as amount
+		from
+			store_stocks A, products B, CATEGORIES C
+		where
+			A.PRODUCT_NO = B.PRODUCT_NO
+			and B.CATEGORY_NO = C.CATEGORY_NO
+			and A.store_no = #{storeNo}
+			and A.product_no = #{productNo}
+	</select>
+	
+	<select id="getStockAmountByStoreNoAndProductNo" parameterType="StoreStock">
+		select
+			store_stock_amount
+		from
+			store_stocks
+		where
+			store_no = #{storeNo}
+			and product_no = #{productNo}
+	</select>
+	
+	<update id="updateStockAmountByStoreNoAndProductNo" parameterType="StoreStock">
+		update
+			store_stocks
+		set
+			store_stock_amount = #{amount}
+		where
+			store_no = #{storeNo}
+			and product_no = #{productNo}
+	</update>
+	
+	<insert id="insertStock" parameterType="StoreStock">
+		insert into store_stocks
+		(store_no, product_no, store_stock_amount)
+		values
+		(#{storeNo}, #{productNo}, #{amount})
+	</insert>
+</mapper> 

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.erp.dao.ProductApprovalDao">
+
+	<insert id="insertFactoryApproval" parameterType="ProductApproval">
+		insert into PRODUCT_APPROVAL
+		(APPROVAL_NO, TYPE_NO, EMPLOYEE_REQUESTER, EMPLOYEE_RESPONSER, FACTORY_ORDER_NO)
+		values
+		(PRODUCT_APPROVAL_NO_SEQ.nextval, #{typeNo}, #{requesterNo}, #{responserNo}, #{factoryOrderNo})
+	</insert>
+	
+	<insert id="insertOrderApproval" parameterType="ProductApproval">
+		insert into PRODUCT_APPROVAL
+		(APPROVAL_NO, TYPE_NO, EMPLOYEE_REQUESTER, EMPLOYEE_RESPONSER, ORDER_NO)
+		values
+		(PRODUCT_APPROVAL_NO_SEQ.nextval, #{typeNo}, #{requesterNo}, #{responserNo}, #{orderNo})
+	</insert>
+	
+	<select id="getAllApprovals" resultType="ApprovalDetail">
+		SELECT
+			A.Approval_no as approvalNo,
+			A.APPROVAL_REQUEST_DATE as requestDate,
+			A.APPROVAL_RESPONSE_DATE as responseDate,
+			A.TYPE_NO as typeNo,
+			B.TYPE_NAME as typeName,
+			A.EMPLOYEE_REQUESTER as requesterNo,
+			C.EMPLOYEE_NAME as requesterName,
+			A.EMPLOYEE_RESPONSER as responserNo,
+			D.EMPLOYEE_NAME as responserName,
+			A.ORDER_NO as orderNo,
+			E.STORE_NO as storeNo,
+			F.STORE_NAME as storeName,
+			A.FACTORY_ORDER_NO as factoryOrderNo,
+			G.STORAGE_NO as storageNo,
+			H.STORAGE_NAME as storageName,
+			A.APPROVAL_STATUS as status,
+			A.APPROVAL_NOTE as note
+		FROM
+			 PRODUCT_APPROVAL A, PRODUCT_APPROVAL_TYPE B, EMPLOYEES C, EMPLOYEES D,
+			 ORDERS E, STORES F, FACTORY_ORDERS G, STORAGES H
+		WHERE
+			A.TYPE_NO = B.TYPE_NO
+			and A.EMPLOYEE_REQUESTER = C.EMPLOYEE_NO
+			and A.EMPLOYEE_RESPONSER = D.EMPLOYEE_NO
+			and A.ORDER_NO = E.ORDER_NO(+)
+			and E.STORE_NO = F.STORE_NO(+)
+			and A.FACTORY_ORDER_NO = G.FACTORY_ORDER_NO(+)
+			and G.STORAGE_NO = H.STORAGE_NO(+)
+			<if test="option == 'ready'">
+				and A.APPROVAL_STATUS = '결재대기중'
+			</if>
+			<if test="option == 'complete'">
+				and A.APPROVAL_STATUS = '결재완료'
+			</if>
+			<if test="option == 'deny'">
+				and A.APPROVAL_STATUS = '반려'
+			</if>
+		order by A.APPROVAL_REQUEST_DATE desc
+	</select>
+	
+	<select id="getApprovalsByRequesterNo" parameterType="map" resultType="ApprovalDetail">
+		SELECT
+			A.Approval_no as approvalNo,
+			A.APPROVAL_REQUEST_DATE as requestDate,
+			A.APPROVAL_RESPONSE_DATE as responseDate,
+			A.TYPE_NO as typeNo,
+			B.TYPE_NAME as typeName,
+			A.EMPLOYEE_REQUESTER as requesterNo,
+			C.EMPLOYEE_NAME as requesterName,
+			A.EMPLOYEE_RESPONSER as responserNo,
+			D.EMPLOYEE_NAME as responserName,
+			A.ORDER_NO as orderNo,
+			E.STORE_NO as storeNo,
+			F.STORE_NAME as storeName,
+			A.FACTORY_ORDER_NO as factoryOrderNo,
+			G.STORAGE_NO as storageNo,
+			H.STORAGE_NAME as storageName,
+			A.APPROVAL_STATUS as status,
+			A.APPROVAL_NOTE as note
+		FROM
+			 PRODUCT_APPROVAL A, PRODUCT_APPROVAL_TYPE B, EMPLOYEES C, EMPLOYEES D,
+			 ORDERS E, STORES F, FACTORY_ORDERS G, STORAGES H
+		WHERE
+			A.TYPE_NO = B.TYPE_NO
+			and A.EMPLOYEE_REQUESTER = C.EMPLOYEE_NO
+			and A.EMPLOYEE_RESPONSER = D.EMPLOYEE_NO
+			and A.ORDER_NO = E.ORDER_NO(+)
+			and E.STORE_NO = F.STORE_NO(+)
+			and A.FACTORY_ORDER_NO = G.FACTORY_ORDER_NO(+)
+			and G.STORAGE_NO = H.STORAGE_NO(+)
+			and A.EMPLOYEE_REQUESTER = #{employeeNo}
+			<if test="option == 'ready'">
+				and A.APPROVAL_STATUS = '결재대기중'
+			</if>
+			<if test="option == 'complete'">
+				and A.APPROVAL_STATUS = '결재완료'
+			</if>
+			<if test="option == 'deny'">
+				and A.APPROVAL_STATUS = '반려'
+			</if>
+		order by A.APPROVAL_REQUEST_DATE desc
+	</select>
+	
+	<select id="getApprovalsByResponserNo" parameterType="map" resultType="ApprovalDetail">
+		SELECT
+			A.Approval_no as approvalNo,
+			A.APPROVAL_REQUEST_DATE as requestDate,
+			A.APPROVAL_RESPONSE_DATE as responseDate,
+			A.TYPE_NO as typeNo,
+			B.TYPE_NAME as typeName,
+			A.EMPLOYEE_REQUESTER as requesterNo,
+			C.EMPLOYEE_NAME as requesterName,
+			A.EMPLOYEE_RESPONSER as responserNo,
+			D.EMPLOYEE_NAME as responserName,
+			A.ORDER_NO as orderNo,
+			E.STORE_NO as storeNo,
+			F.STORE_NAME as storeName,
+			A.FACTORY_ORDER_NO as factoryOrderNo,
+			G.STORAGE_NO as storageNo,
+			H.STORAGE_NAME as storageName,
+			A.APPROVAL_STATUS as status,
+			A.APPROVAL_NOTE as note
+		FROM
+			 PRODUCT_APPROVAL A, PRODUCT_APPROVAL_TYPE B, EMPLOYEES C, EMPLOYEES D,
+			 ORDERS E, STORES F, FACTORY_ORDERS G, STORAGES H
+		WHERE
+			A.TYPE_NO = B.TYPE_NO
+			and A.EMPLOYEE_REQUESTER = C.EMPLOYEE_NO
+			and A.EMPLOYEE_RESPONSER = D.EMPLOYEE_NO
+			and A.ORDER_NO = E.ORDER_NO(+)
+			and E.STORE_NO = F.STORE_NO(+)
+			and A.FACTORY_ORDER_NO = G.FACTORY_ORDER_NO(+)
+			and G.STORAGE_NO = H.STORAGE_NO(+)
+			and A.EMPLOYEE_RESPONSER = #{employeeNo}
+			<if test="option == 'ready'">
+				and A.APPROVAL_STATUS = '결재대기중'
+			</if>
+			<if test="option == 'complete'">
+				and A.APPROVAL_STATUS = '결재완료'
+			</if>
+			<if test="option == 'deny'">
+				and A.APPROVAL_STATUS = '반려'
+			</if>
+			<if test="option == 'signed'">
+				and A.APPROVAL_STATUS in ('결재완료', '반려')
+			</if>			
+		order by A.APPROVAL_REQUEST_DATE desc
+	</select>
+	
+	<update id="updateApproval" parameterType="map">
+		update
+			product_approval
+		set
+			APPROVAL_RESPONSE_DATE = sysdate,
+			APPROVAL_NOTE = #{note},
+			APPROVAL_STATUS = #{status}
+		where
+			approval_no = #{approvalNo}
+	</update>
+</mapper> 

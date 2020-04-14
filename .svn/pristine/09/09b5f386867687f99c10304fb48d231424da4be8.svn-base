@@ -1,0 +1,11 @@
+package kr.co.jhta.erp.service;
+
+import java.util.List;
+
+import kr.co.jhta.erp.vo.Category;
+import kr.co.jhta.erp.vo.Store;
+
+public interface StoreService {
+
+	List<Store> getStoreFinds(String keyword);
+}

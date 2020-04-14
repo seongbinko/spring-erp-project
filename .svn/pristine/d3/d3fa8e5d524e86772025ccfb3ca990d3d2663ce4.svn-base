@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+
+	<!-- 
+		Connection Pool 스프링 빈으로 등록 
+	-->
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.OracleDriver" />
+		<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
+		<property name="username" value="erp" />
+		<property name="password" value="zxcv1234" />
+	</bean>
+	
+	<!-- 
+		트랜잭션 매니저 스프링 빈으로 등록 
+	-->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- 
+		mybatis 핵심객체 스프링 빈으로 등록	
+	-->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:/META-INF/mybatis/mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath:/META-INF/mybatis/mappers/*.xml" />
+	</bean>
+	
+	<!-- 
+		Dao 인터페이스를 스캔해서 Dao구현객체를 생성하고, 스프링의 빈으로 등록시키는
+		MapperScannerConfigurer 객체 스프링 빈으로 등록
+	-->
+	
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="kr.co.jhta.erp.dao"></property>
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+	
+	<!-- 
+		트랜잭션 처리가 필요한 곳에 @Transactional 어노테이션을 부착하면
+		스프링이 트랜잭션 처리를 자동으로 수행한다.
+	 -->
+	 <tx:annotation-driven transaction-manager="transactionManager"/>
+		
+	<!--  
+		의존성 주입관련 어노테이션을 감지하고, 적절한 처리를 수행하는 
+		스프링의 xxxAnnotationProcessor 객체 빈으로 등록
+	-->
+	<context:annotation-config />
+	
+	<!--  
+		지정된 패키지에서 @Service가 부착된 클래스를 스프링의 빈으로 등록
+		xxxServiceImpl들이 빈으로 등록된다.
+	-->
+	<context:component-scan base-package="kr.co.jhta.erp.service" />
+	
+
+</beans>

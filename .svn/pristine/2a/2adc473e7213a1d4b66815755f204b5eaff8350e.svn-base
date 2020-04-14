@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.erp.dao.ProductDao">
+
+	<sql id="product_columns">
+		PRODUCT_NO				as no,
+		PRODUCT_NAME			as name,
+		PRODUCT_PRICE			as price,
+		PRODUCT_CREATE_DATE		as createDate,
+		CATEGORY_NO				as categoryNo
+	</sql>
+
+	<select id="getProductByName" parameterType="string" resultType="Product">
+		select
+			<include refid="product_columns" />
+		from
+			products
+		where
+			product_name = #{value}
+	</select>
+	
+	<insert id="insertNewProduct" parameterType="Product">
+		insert into products
+		(product_no, product_name, product_price, product_create_date, category_no)
+		values
+		(product_no_seq.nextval, #{name}, #{price}, #{createDate}, #{categoryNo})
+	</insert>
+	
+	<select id="getProductsByCategoryNo" parameterType="int" resultType="Product">
+		select
+			<include refid="product_columns" />
+		from
+			products 
+		where
+			category_no = #{value}
+	</select>
+	
+	<select id="getProductByNo" parameterType="int" resultType="Product">
+		select
+			<include refid="product_columns" />
+		from
+			products
+		where
+			product_no = #{value}
+	</select>
+	
+	<update id="updateProduct" parameterType="Product">
+		update
+			products
+		set
+			PRODUCT_NAME			= #{name},
+			PRODUCT_PRICE			= #{price},
+			PRODUCT_CREATE_DATE		= #{createDate},
+			CATEGORY_NO				= #{categoryNo}
+		where
+			product_no = #{no}
+	</update>
+	
+	<delete id="deleteProduct" parameterType="int">
+		delete from
+			products
+		where 
+			product_no = #{value}	
+	</delete>
+	
+	<select id="searchProducts" parameterType="map" resultType="ProductDto">
+		select
+			X.PRODUCT_NO				as no,
+			X.PRODUCT_NAME				as name,
+			X.PRODUCT_PRICE				as price,
+			X.PRODUCT_CREATE_DATE		as createDate,
+			X.CATEGORY_NO				as categoryNo,
+			X.CATEGORY_NAME				as categoryName,
+			X.UPPER_CATEGORY_NO			as upperCategoryNo,
+			X.UPPER_CATEGORY_NAME       as upperCategoryName
+		from	
+			(select
+				row_number() over (order by product_no asc) as rn,
+				A.PRODUCT_NO			PRODUCT_NO,		
+				A.PRODUCT_NAME			PRODUCT_NAME,			
+				A.PRODUCT_PRICE			PRODUCT_PRICE,			
+				A.PRODUCT_CREATE_DATE	PRODUCT_CREATE_DATE,	
+				A.CATEGORY_NO			CATEGORY_NO	,
+				B.CATEGORY_NAME			CATEGORY_NAME,			
+				B.UPPER_CATEGORY_NO		UPPER_CATEGORY_NO,		
+				C.CATEGORY_NAME 		UPPER_CATEGORY_NAME       
+			from
+				products A, categories B, CATEGORIES C
+			where
+				A.CATEGORY_NO = B.CATEGORY_NO
+				and B.UPPER_CATEGORY_NO = C.category_no
+				<choose>
+					<when test="opt == 'categoryname'">
+						and B.category_name like '%' || #{opt1} || '%'
+					</when>
+					<when test="opt == 'productname'" >
+						and A.product_name like '%' || #{opt1} || '%'
+					</when>
+					<when test="opt == 'searchdate'">
+						<if test="opt1 != ''">
+							and A.product_create_date &gt;= #{opt1}					
+						</if>
+						<if test="opt2 != ''">
+							and A.product_create_date &lt;= #{opt2}					
+						</if>
+					</when>
+					<when test="opt == 'searchprice'">
+						<if test="opt1 != ''">
+							and A.product_price &gt;= #{opt1}				
+						</if>
+						<if test="opt2 != ''">
+							and A.product_price &lt;= #{opt2}				
+						</if>
+					</when>
+				</choose>) X
+			where 
+		    X.rn >= #{beginIndex}
+		    and X.rn &lt;= #{endIndex}
+	</select>
+	
+	<select id="getSearchedProductsCount" parameterType="map" resultType="int">
+		select
+			count(*)
+		from
+			products A, categories B, CATEGORIES C
+		where
+			A.CATEGORY_NO = B.CATEGORY_NO
+			and B.UPPER_CATEGORY_NO = C.category_no
+			<choose>
+				<when test="opt == 'categoryname'">
+					and B.category_name like '%' || #{opt1} || '%'
+				</when>
+				<when test="opt == 'productname'" >
+					and A.product_name like '%' || #{opt1} || '%'
+				</when>
+				<when test="opt == 'searchdate'">
+					<if test="opt1 != ''">
+						and A.product_create_date &gt;= #{opt1}					
+					</if>
+					<if test="opt2 != ''">
+						and A.product_create_date &lt;= #{opt2}					
+					</if>
+				</when>
+				<when test="opt == 'searchprice'">
+					<if test="opt1 != ''">
+						and A.product_price &gt;= #{opt1}				
+					</if>
+					<if test="opt2 != ''">
+						and A.product_price &lt;= #{opt2}				
+					</if>
+					
+				</when>
+			</choose>
+	</select>
+	
+	<select id="getProductDetailByProductNo" parameterType="int" resultType="ProductDto">
+		select
+			A.PRODUCT_NO				as no,
+			A.PRODUCT_NAME				as name,
+			A.PRODUCT_PRICE				as price,
+			A.PRODUCT_CREATE_DATE		as createDate,
+			A.CATEGORY_NO				as categoryNo,
+			B.CATEGORY_NAME				as categoryName,
+			B.UPPER_CATEGORY_NO			as upperCategoryNo,
+			C.CATEGORY_NAME             as upperCategoryName
+		from
+			products A, categories B, CATEGORIES C
+		where
+			A.CATEGORY_NO = B.CATEGORY_NO
+			and B.UPPER_CATEGORY_NO = C.category_no
+			and A.PRODUCT_NO = #{value}
+	</select>
+	
+	<select id="getCategoiesByProductsNo" parameterType="int" resultType="Product">
+		select
+			A.PRODUCT_NO				as no,
+			A.PRODUCT_NAME				as name,
+			A.PRODUCT_PRICE				as price,
+			A.PRODUCT_CREATE_DATE		as createDate,
+			A.CATEGORY_NO				as categoryNo,
+			B.CATEGORY_NAME				as categoryName,
+			B.UPPER_CATEGORY_NO			as upperCategoryNo,
+			C.CATEGORY_NAME             as upperCategoryName
+		from
+			products A, categories B, CATEGORIES C
+		where
+			A.CATEGORY_NO = B.CATEGORY_NO
+			and B.UPPER_CATEGORY_NO = C.category_no
+			and A.PRODUCT_NO = #{value}
+	</select>
+</mapper> 

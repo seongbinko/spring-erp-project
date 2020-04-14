@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="kr.co.jhta.erp.dao.StorageDao">
+
+	<select id="getAllStorages" resultType="Storage">
+		select
+			STORAGE_NO			as no,
+			STORAGE_NAME		as name,
+			STORAGE_ADDRESS		as address,
+			EMPLOYEE_NO			as employeeNo
+		from
+			storages
+		order by 
+			storage_no asc
+	</select>  
+	
+	<select id="getStorageByNo" parameterType="int" resultType="Storage">
+		select
+			STORAGE_NO			as no,
+			STORAGE_NAME		as name,
+			STORAGE_ADDRESS		as address,
+			EMPLOYEE_NO			as employeeNo
+		from
+			storages
+		where
+			storage_no = #{value}
+	</select>
+	
+	<select id="getStorageStockDetailsByStorageNo" parameterType="int" resultType="StorageStockDto">
+		select
+			A.storage_no			as storageNo,
+			D.product_no			as productNo,
+			B.product_name			as productName,
+			B.product_price			as productPrice,
+			B.category_no			as categoryNo,
+			C.category_name			as categoryName,
+			B.product_create_date	as productCreateDate,
+			D.product_amount		as amount
+		from
+			storages A, products B, Categories C, Storage_stocks D
+		where
+			D.product_no = B.product_no
+			and B.category_no = C.category_no
+			and A.storage_no = D.storage_no
+			and D.storage_no = #{value}
+	</select>
+	
+	<insert id="insertStock" parameterType="StorageStock">
+		insert into storage_stocks
+		(storage_no, product_no, PRODUCT_AMOUNT)
+		values
+		(#{storageNo}, #{productNo}, #{amount})
+	</insert>
+	
+	<select id="getStockAmountByStorageNoAndProductNo" parameterType="StorageStock" resultType="int">
+		select
+			PRODUCT_AMOUNT
+		from
+			storage_stocks
+		where
+			storage_no = #{storageNo}
+			and product_no = #{productNo}
+	</select>
+	
+	<update id="updateStockAmountByStorageNoAndProductNo" parameterType="StorageStock">
+		update
+			storage_stocks
+		set
+			product_amount = #{amount}
+		where
+			storage_no = #{storageNo}
+			and product_no = #{productNo}
+	</update>
+	
+</mapper>

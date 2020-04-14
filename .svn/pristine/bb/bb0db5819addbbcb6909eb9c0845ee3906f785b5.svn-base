@@ -1,0 +1,33 @@
+package kr.co.jhta.erp.utils;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class DateUtils {
+
+	private static SimpleDateFormat normalDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	private static SimpleDateFormat yearDateFormat = new SimpleDateFormat("yyyy");
+	
+	public static String dateToString(Date date) {
+		if(date == null) {
+			return "";
+		}
+		return normalDateFormat.format(date);
+	}
+	
+	public static Date stringToDate(String dateString) throws Exception{
+		if(dateString == null) {
+			return null;
+		}
+		Date date = normalDateFormat.parse(dateString);
+		return date;
+	}
+	
+	public static String dateToYear(Date date) {
+		if(date == null) {
+			return "";
+		}
+		return yearDateFormat.format(date);
+	}
+	
+}

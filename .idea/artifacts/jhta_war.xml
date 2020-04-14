@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="jhta:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>jhta</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="jhta-1.0.0-BUILD-SNAPSHOT.war">
+      <element id="artifact" artifact-name="jhta:war exploded" />
+    </root>
+  </artifact>
+</component>

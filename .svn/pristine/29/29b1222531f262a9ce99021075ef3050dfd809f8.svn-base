@@ -1,0 +1,40 @@
+package kr.co.jhta.erp.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import kr.co.jhta.erp.dao.OrderDao;
+import kr.co.jhta.erp.vo.Order;
+
+@Service
+public class OrderServiceImpl implements OrderService{
+
+	@Autowired
+	private OrderDao OrderDao;
+	
+	@Override
+	public void insertOrder(Order order) {
+		OrderDao.insertNewOrder(order);
+		
+	}
+
+	@Override
+	public List<Order> getOrderByNo(int orderNo) {
+		List<Order> orders = OrderDao.getOrderByNo(orderNo);
+		return orders;
+	}
+
+	@Override
+	public void updateOrder(Order order) {
+		OrderDao.updateOrder(order);
+	}
+
+	@Override
+	public void deleteProduct(int orderNo) {
+		OrderDao.deleteOrder(orderNo);
+	}
+
+	
+}

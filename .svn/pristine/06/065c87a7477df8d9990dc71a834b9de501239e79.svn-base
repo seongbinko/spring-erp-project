@@ -1,0 +1,15 @@
+package kr.co.jhta.erp.dao;
+
+import java.util.List;
+
+import kr.co.jhta.erp.vo.Order;
+
+public interface OrderDao {
+
+	void insertNewOrder(Order order);
+	List<Order> getOrderByNo(int orderNo);
+	void updateOrder(Order order);
+	void deleteOrder(int orderNo);
+	//List<Order> searchOrders(); 발주내역 조회    매장? - 발주내역 확인?
+	
+}

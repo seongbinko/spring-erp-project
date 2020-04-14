@@ -1,0 +1,105 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<title>인사발령등록</title>
+  	<meta charset="UTF-8">
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  	<style type="text/css">
+
+  	</style>
+</head>
+<body>
+<%@include file="../common/nav.jsp" %>
+<%@include file="hr_sidebar.jsp" %>
+<div  id="app" class="container">
+	<div class="page-header">
+		<h1>인사발령 등록</h1>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="row">
+				<div class="col-sm-4">
+					 <div><h4>인사발령</h4></div>
+				</div>
+			</div>
+			<br>
+			<form id="internal-mobility-registerform">
+				<div class="table-responsive">
+					<table class="table table-condensed">
+						<thead>
+							<tr>
+								<th>발령일자</th>
+								<th>사번</th>
+								<th>성명</th>
+								<th>발령구분</th>
+								<th>이전직급</th>
+								<th>발령직급</th>
+								<th>이전부서</th>
+								<th>발령부서</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><input type="date" name="date" value="2010-10-10"></td>
+								<td><input type="number" name="no" ></td>
+								<td><input type="text" name="name"></td>
+								<td><input type="text" name="type"></td>
+								<td><input type="number" name="prevGradeNo"></td>
+								<td><input type="text" name="gradeNo"></td>
+								<td><input type="number" name="prevDeptNo"></td>
+								<td><input type="text" name="deptNo"></td>
+							</tr>
+						</tbody>
+					 </table>
+				 </div>
+				 <br>
+				 <button class="btn btn-default" type="reset" >초기화</button>
+				 <button id="add-btn" class="btn btn-default" type="button">추가</button>
+				 <button id="save-btn" class="btn btn-default" type="button">저장</button>
+			 </form>
+		</div>	
+	</div>
+</div>
+<script type="text/javascript">
+	$("#add-btn").click(function(){
+		var row = "";
+		row += "<tr>"
+		row += "<td><input type='date' name='date' value='2010-10-10'></td>"
+		row += "<td><input type='text' name='no'></td>"
+		row += "<td><input type='text' name='name'></td>"
+		row += "<td><input type='text' name='type'></td>"
+		row += "<td><input type='text' name='prevGradeNo'></td>"
+		row += "<td><input type='text' name='gradeNo'></td>"
+		row += "<td><input type='text' name='prevDeptNo'></td>"
+		row += "<td><input type='text' name='deptNo'></td>"
+		row += "</tr>"
+		
+		$('tbody').append(row);
+	})
+	
+	$("#save-btn").on('click',function (){
+		var hasEmptyInput = false;
+		$("#internal-mobility-registerform :input[type=text]").each(function(index, item) {
+			console.log('값', $(item).val());
+			if (!$(item).val()) {
+				hasEmptyInput = true;
+			}
+		});
+		console.log(hasEmptyInput);
+		if (hasEmptyInput) {
+			alert("입력되지 않은 필드가 있습니다.");
+			return;
+		} 
+		$("#internal-mobility-registerform").attr('action','add_internal_mobility.erp')
+		alert("등록 완료")			
+		$("#internal-mobility-registerform").submit();
+		
+	})
+</script>
+</body>
+</html>

@@ -27,6 +27,7 @@
 	</mvc:view-resolvers>
 	
 	<context:component-scan base-package="kr.co.jhta.erp.web" />
+	<context:component-scan base-package="kr.co.jhta.erp.exception" />
 	
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 

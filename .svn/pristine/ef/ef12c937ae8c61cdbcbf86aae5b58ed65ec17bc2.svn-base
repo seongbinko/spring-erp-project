@@ -1,0 +1,48 @@
+package kr.co.jhta.erp.vo;
+
+import java.util.Date;
+
+public class Management {
+	private int no;
+	private String type;
+	private Date date;
+	private int amount;
+	private int employeeNo;
+	@Override
+	public String toString() {
+		return "Management [no=" + no + ", type=" + type + ", date=" + date + ", amount=" + amount + ", employeeNo="
+				+ employeeNo + "]";
+	}
+	public int getNo() {
+		return no;
+	}
+	public void setNo(int no) {
+		this.no = no;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	public int getAmount() {
+		return amount;
+	}
+	public void setAmount(int amount) {
+		this.amount = amount;
+	}
+	public int getEmployeeNo() {
+		return employeeNo;
+	}
+	public void setEmployeeNo(int employeeNo) {
+		this.employeeNo = employeeNo;
+	}
+	
+	
+}

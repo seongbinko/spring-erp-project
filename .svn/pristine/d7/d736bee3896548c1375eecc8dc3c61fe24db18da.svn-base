@@ -1,0 +1,82 @@
+package kr.co.jhta.erp.service;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import kr.co.jhta.erp.dao.AttendanceDao;
+import kr.co.jhta.erp.vo.Attendance;
+import kr.co.jhta.erp.vo.HrPagination;
+
+@Service
+public class AttendanceServiceImpl implements AttendanceService {
+	
+	@Autowired
+	private AttendanceDao attendanceDao;
+
+	@Override
+	public void addEmployeeAttendance(int employeeNo, String employeeName, Date intime) throws Exception {
+		
+		Attendance attendance = new Attendance();
+		attendance.setInTime(intime);
+		attendance.setAttendanceDate(intime);
+		attendance.setEmployeeNo(employeeNo);
+		attendance.setEmployeeName(employeeName);
+		
+		attendanceDao.addEmployeeAttendance(attendance);
+		
+	}
+
+	@Override
+	public Attendance getAttendanceTodayByEmpNo(int employeeNo) {
+		
+		return attendanceDao.getAttendanceTodayByEmpNo(employeeNo);
+	}
+
+	@Override
+	public void updateEmployeeAttendance(int employeeNo, Date outtime) {
+		
+		Attendance attendance = attendanceDao.getAttendanceTodayByEmpNo(employeeNo);
+		attendance.setOutTime(outtime);
+		attendance.setStatus("N");
+		long diff = outtime.getTime() - attendance.getInTime().getTime();
+		
+		double overtimeAmount =  diff/ (double)(1000*60*60);
+		if(overtimeAmount > 9.0) {
+			overtimeAmount = overtimeAmount-9.0; 
+			System.out.println(overtimeAmount);
+			attendance.setOvertimeAmount(overtimeAmount);
+		}
+		attendanceDao.updateEmployeeAttendance(attendance);
+	}
+
+	@Override
+	public Map<String, Object> searchAttendances(Map<String, Object> criteria) {
+		if(criteria.get("option") != null ) {
+			if(criteria.get("option").equals("no") || criteria.get("option").equals("employeeNo")) {
+				int keyword = Integer.parseInt((String)criteria.get("keyword"));
+				criteria.put("keyword", keyword );
+			}
+		}
+		int totalSize = attendanceDao.getTotalPageSize(criteria);			
+		Map<String, Object> attendanceByPage = new HashMap<String, Object>();
+		if(criteria.get("pageNo") == null || criteria.get("pageNo").equals(1)) {
+			HrPagination pagination = new HrPagination(1, totalSize);
+			criteria.put("beginIndex", pagination.getBeginIndex());
+			criteria.put("endIndex", pagination.getEndIndex());
+			attendanceByPage.put("pagination", pagination);
+		} else {
+			HrPagination pagination = new HrPagination((Integer) criteria.get("pageNo"), totalSize);
+			criteria.put("beginIndex", pagination.getBeginIndex());
+			criteria.put("endIndex", pagination.getEndIndex());
+			attendanceByPage.put("pagination", pagination);
+		}
+		List<Attendance> attendances = attendanceDao.searchAttendances(criteria);
+		attendanceByPage.put("attendances", attendances);
+		return attendanceByPage;
+	}
+	
+}

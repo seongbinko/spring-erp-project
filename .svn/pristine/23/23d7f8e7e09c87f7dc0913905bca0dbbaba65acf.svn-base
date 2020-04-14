@@ -1,0 +1,137 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title></title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	
+	<link rel="stylesheet" href="/resources/css/Nwagon.css" type="text/css">
+	<script src="/resources/js/Nwagon.js"></script>
+	<script src="/resources/js/Nwagon_no_vml.js"></script>
+	
+	<style>
+		*{margin:0;padding:0;}
+		div{padding:0px; overflow: hidden; height: auto;}
+		.hgroup{padding:20px;background-color:#e9e9e9;}
+		.hgroup h1{font-family:Tahoma;}
+		.hgroup p{margin:10px 0;font-size:10px}
+		h2{margin:0;padding:20px;border:1px solid #000;background-color:#f9f9f9;border-width:1px 0;font-family:Tahoma;}
+		
+		.row .page-header {
+			margin: 5px 0 5px;
+		}
+	</style>
+	
+</head>
+<body>
+<%@ include file="../common/nav.jsp" %>
+<%@ include file="storesidebar.jsp" %>
+<div class="container">
+	<div class="page-header" style="margin: 30px 0px 20px;">
+		<h1>통계</h1>
+	</div>
+		
+	<div class="col-sm-12">
+		<div class="row">
+			<div class="col-sm-12">
+		        <h4> 1 Bar (생각해보자...)</h4>
+				<div id="chart_line">
+		        
+		        </div>
+			</div>
+			<div class="col-sm-6">
+		        <h4 class="page-header"> 2 Bar (생각해보자...)</h4>
+		        <div id="Nwagon">
+					
+				</div>
+			</div>
+			<div class="col-sm-6">
+		        <h4 class="page-header"> 3 Bar (생각해보자...)</h4>
+				<div id="chart_d">
+				</div>
+			</div>
+		</div>
+	</div> 
+	
+</div>
+</body>
+<script type="text/javascript">
+	
+	var options = {
+		'legend':{
+			names: ['08-12', '08-19', '08-26', '09-02', '09-09', '09-16'],
+			hrefs: []
+		},
+		'dataset':{
+			title:'Playing time per day',
+			values: [[61, 7, 66, 20], [76, 33, 66, 40], [49, 22, 45, 30], [58, 26, 76, 70],
+					[48, 15, 76, 50], [56, 18, 83, 80], [68, 27, 96, 99]],
+			colorset: ['#DC143C','#FF8C00', '#30a1ce', '#339933'],
+			fields:['발주량', '폐기량', '교환량', '판매량']
+		},
+		'chartDiv' : 'chart_line',
+		'chartType' : 'line',
+		'chartSize' : {width:1000, height:300},
+		'minValue' : 00,
+		'maxValue' : 100,
+		'increment' : 10,
+		'isGuideLineNeeded' : true  //default set to false
+	};
+	Nwagon.chart(options);
+	
+	
+	
+	var options = {
+		'legend': {
+			names: ['스마트폰','모바일 악세서리','TV','냉장고','에어컨','세탁기','청소기','노트북','컴퓨터'],
+			hrefs: [
+				'http://nuli.navercorp.com/sharing/blog/post/1132444',
+				'http://nuli.navercorp.com/sharing/blog/post/1132442',
+				'http://nuli.navercorp.com/sharing/blog/post/1132439',
+				'http://nuli.navercorp.com/sharing/blog/post/1132426',
+				'http://nuli.navercorp.com/sharing/blog/post/1115205',
+				'http://nuli.navercorp.com/sharing/blog/post/1111811',
+				'http://nuli.navercorp.com/sharing/blog/post/1111181',
+				'http://nuli.navercorp.com/sharing/blog/post/1096163',
+				'http://nuli.navercorp.com/sharing/blog/post/1079940'
+			]
+		}, 
+		'dataset': {
+			title: 'Playing time per day',
+			values: [
+				[5,7,2], [2,5,7], [7,2,3], [6,1,5], [5,3,8], [8,3,1], [6,3,9], [6,2,6], [8,2,4]
+			],
+			colorset: ['#DC143C', '#FF8C00', "#30a1ce"],
+			fields: ['Working Time', 'Late count', 'Mail count']
+		},
+		'chartDiv': 'Nwagon',
+		'chartType': 'stacked_column',
+		'chartSize': { width: 500, height: 300 },
+		'maxValue': 20,
+		'increment': 1
+	};
+	Nwagon.chart(options);
+	
+	var options = {
+		'dataset': {
+			title: 'Web accessibility status',
+			values:[18, 12, 3, 10],
+			colorset: ['#2BC8C9', '#FF8C00', '#DC143C','#2EB400'],
+			fields: ['발주량', '폐기량',  '교환량', '판매량'] 
+		},
+		'donut_width' : 40, 
+		'core_circle_radius':60,
+		'chartDiv': 'chart_d',
+		'chartType': 'donut',
+		'chartSize': {width:600, height:300}
+	};
+	Nwagon.chart(options); 
+	
+	
+</script>
+</html>

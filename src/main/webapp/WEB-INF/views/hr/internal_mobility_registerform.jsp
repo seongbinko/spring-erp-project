@@ -94,7 +94,7 @@
 													<td>{{employee.departmentNo}}</td>
 													<td>{{employee.departmentName}}</td>
 													<td>
-														<button v-if="employee.no" type="button" class="btn btn-default pull-right" @click="insertEmp()">선택</button>
+														<button type="button" class="btn btn-default pull-right" @click="insertEmp()">선택</button>
 													</td>
 												</tr>
 											</tbody>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.erp.dao.StoreDao">
+
+	<sql id="store_columns">
+			store_no 		as no,
+			store_name		as name,
+			store_address	as address,
+			employee_no		as employeeNo,
+			store_tel		as tel,
+			store_lat		as lat,
+			store_lon		as lon 
+	</sql>
+
+	<select id="getStoreFinds" resultType="StoreFindDto">
+		select
+			A.store_no 		as no,
+			A.store_name	as name,
+			A.store_tel		as tel,
+			A.store_address	as address,
+			A.employee_no	as employeeNo,
+			B.employee_name	as employeeName,
+			A.store_lat		as lat,
+			A.store_lon		as lon
+		from
+			stores A, employees B
+		where
+			A.employee_no = B.employee_no
+			and(
+			A.store_name like '%' || #{value} || '%'
+			OR
+			A.store_address  like '%' || #{value} || '%'
+			OR
+			A.employee_no  like '%' || #{value} || '%'
+			OR
+			B.employee_name  like '%' || #{value} || '%')
+		order by
+			A.store_no asc
+	</select>
+	
+	<select id="getAllStores" resultType="Store">
+		select
+			<include refid="store_columns" />
+		from
+			stores
+		order by
+			store_no asc
+	</select>
+	
+	<select id="getStoreByNo" parameterType="int" resultType="Store">
+		select
+			<include refid="store_columns" />
+		from
+			stores
+		where 
+			store_no = #{value}
+	</select>
+	
+	<update id="updateStore" parameterType="Store">
+		update 
+			stores
+		set
+			store_name		= #{name},
+			store_address	= #{address},
+			employee_no		= #{employeeNo},
+			store_tel		= #{tel}
+		where
+			store_no = #{no}
+	</update>	
+	
+	<select id="getStoreDetailByNo" parameterType="int" resultType="StoreManagementDto">
+		select
+			A.store_no 			as storeNo,
+			A.store_name		as storeName,
+			A.store_tel			as storeTel,
+			A.store_address		as storeAddress,
+			A.employee_no		as employeeNo,
+			B.employee_name		as employeeName,
+			B.employee_tel		as employeeTel,
+			C.department_name	as employeeDepartmentName,
+			B.image_name		as employeeImageName,
+			B.email		 		as employeeEmail
+		from
+			stores A, employees B, departments C
+		where
+			A.employee_no = B.employee_no
+			and B.department_no = C.department_no
+			and A.store_no = #{value}
+	</select>
+	
+	<select id="getAllStoreDetails" resultType="StoreManagementDto">
+		select
+			A.store_no 			as storeNo,
+			A.store_name		as storeName,
+			A.store_tel			as storeTel,
+			A.store_address		as storeAddress,
+			A.employee_no		as employeeNo,
+			B.employee_name		as employeeName
+		from
+			stores A, employees B
+		where
+			A.employee_no = B.employee_no(+)
+		order by A.store_no asc
+	</select>
+	
+</mapper> 

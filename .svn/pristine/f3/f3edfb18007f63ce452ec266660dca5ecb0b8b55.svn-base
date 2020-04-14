@@ -1,0 +1,62 @@
+package kr.co.jhta.erp.web.cotroller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/store")
+public class StoreController {
+
+	@GetMapping("/main.erp")
+	public String storeMain() {
+		
+		return "store/main";
+	}
+	
+	@GetMapping("/findStore.erp")
+	public String findStore() {
+		
+		return "store/selectfindstoremain";
+	}
+	
+	@GetMapping("/order.erp")
+	public String order() {
+		
+		return "store/orderform";
+	}
+	@GetMapping("/orderhistory.erp")
+	public String orderHistory() {
+		
+		return "store/orderhistory";
+	}
+	@GetMapping("/orderregister.erp")
+	public String orderRegister() {
+		
+		return "store/orderregisterform";
+	}
+	@GetMapping("/ordermodify.erp")
+	public String orderModify() {
+		
+		return "store/ordermodify";
+	}
+	@GetMapping("/statistic.erp")
+	public String storeStatistic() {
+		
+		return "store/storestatistic";
+	}
+	@GetMapping("/stockinformation.erp")
+	public String stockInformation() {
+		
+		return "store/stockinformation";
+	}
+	@GetMapping("/transactioninformation.erp")
+	public String transactionInformation() {
+		
+		return "store/transactioninformation";
+	}
+	
+	
+	
+	
+}

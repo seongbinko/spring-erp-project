@@ -1,0 +1,8 @@
+package kr.co.jhta.erp.dao;
+
+import kr.co.jhta.erp.vo.ProductApproval;
+
+public interface ProductApprovalDao {
+
+	void insertFactoryApproval(ProductApproval approval);
+}

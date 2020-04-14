@@ -140,7 +140,7 @@
 			alert("이전 비밀번호와 일치합니다.")
 			return false;
 		}
-		if(tel2.length < 8 ) {
+		if(tel2.length > 4 ) {
 			alert("전화번호 제대로 입력")
 			return false;
 		}

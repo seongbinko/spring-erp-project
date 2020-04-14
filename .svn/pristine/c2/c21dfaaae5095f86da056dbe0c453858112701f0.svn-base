@@ -1,0 +1,325 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<title>발주(구매) 등록 | JHTA ERP</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<style type="text/css">
+		.order-new-add th {
+		 	background: #f7f7f7;
+		 	width: 120px;
+		 	height: 45px;
+		}
+		.order-new-add td {
+			width: 320px;
+		}
+		
+	</style>
+</head>
+<body>
+<%@ include file="../common/nav.jsp" %>
+<%@ include file="storesidebar.jsp" %>
+<div class="container-fluid col-sm-8" style="margin-left:250px; padding: 50px 0px;">
+	<div class="page-header">
+		<h1>발주(구매)</h1>
+	</div>
+	<div class="row" id="order-form">
+		<div class="col-sm-12">
+			<div>
+				<h3 style="display: inline-block; margin-top: 0px;">발주서작성</h3>
+				<div class="" style="float: right; display: inline-block;">
+	                <button class="btn btn-info" type="button" data-toggle="modal" data-target="#store-search" id="btn-store-search">발주처조회</button>
+	                <button class="btn btn-danger">전체삭제</button>
+	                <button class="btn btn-default" id="buy_print">인쇄</button>
+	                <button class="btn btn-default" id="buy_xls">엑셀</button>
+	            </div>
+			</div>
+            <div class="order-new-add" style="margin-top: 10px;" id="order-store-form">
+            	<form id="">
+	            	<table class="table table-bordered"> 
+	            		<thead>
+			            	<tr>
+			            		<th>발주일자</th>
+			            		<td><input type="date"></td>
+			            		<th>납품예정일자</th>
+			            		<td>2020-02-08</td>
+			            		<th>기타</th>
+			            		<td></td>
+			            	</tr>
+			            	<tr>
+			            		<th>발주처명</th>
+			            		<td>{{store.storeName}}</td>
+			            		<th>발주담당자</th>
+			            		<td>{{store.employeeName}}</td>
+			            		<th>전화</th>
+			            		<td>{{store.storeTel}}</td>
+			            	</tr>
+			            	<tr>
+			            		<th>주소</th>
+			            		<td colspan="5">{{store.storeAddress}}</td>
+			            	</tr>
+			            	<tr>
+			            		<th>발주건수</th>
+			            		<td></td>
+			            		<th>수량</th>
+			            		<td></td>
+			            		<th>합계금액</th>
+			            		<td></td>
+			            	</tr>
+	            		</thead>
+	            		<tbody>
+	            			
+	            		</tbody> 
+	            	</table>
+            	</form>
+            </div>
+           	
+           	<div class="order-add-list">
+            	<h3 style="display: inline-block; margin-top: 0px;">상품발주</h3>
+				<div class="" style="float: right; display: inline-block;">
+	                <button class="btn btn-success" id="order-add-list-btn">상품내역 닫기</button> 
+	            </div>
+	            <div class="" style="margin-top: 5px;">  
+	            	<form id="add-form-list">
+	            		<table class="table table-bordered">
+	            			<thead>
+	            				<tr>
+					                <td>
+					                    <div class="col-sm-4" id="select-sub-category">
+					                    	<label> 대분류 : 
+						                        <select style="margin: 3px; text-align-last: center; width: 300px" id="select-upper-category">
+						                            <option disabled selected>----- 상위 카테고리 -----</option>
+													<option v-bind:value="upcate.no" v-for="upcate in uppercategories">{{upcate.name}}</option>
+						                        </select>
+					                        </label>
+					                        <label> 소분류 :
+						                        <select style="margin: 3px; text-align-last: center; width: 300px" id="select-category">
+						                            <option disabled selected id="sub-default">----- 하위 카테고리 -----</option>
+						                            <option v-bind:value="cate.no" v-for="cate in categories">{{cate.name}}</option>
+						                        </select> 
+					                        </label> 
+					                        <label> 제　품 :
+						                        <select style="margin: 3px; text-align-last: center; width: 300px" id="select-product">
+						                            <option disabled selected id="cate-default">----- 상품 선택하기 -----</option>
+						                            <option v-bind:value="product.no" v-for="product in products">{{product.name}}</option>
+						                        </select>
+					                        </label>
+					                    </div>
+					                    <div class="col-sm-4" id="product-add-form">
+					                        <label> 재고: 
+						                       	<input type="text" class="" style="width: 300px;" />
+					                       	</label> 
+					                        <label> 수량: 
+						                       	<input type="number" class="" style="width: 300px;"/>
+					                       	</label> 
+					                       	<label> 금액: 
+					                       		<input type="text" class="" v-bind:value="product.price" style="width: 300px;"/> 
+					                       	</label>
+					                    </div> 
+					                    <div class="col-sm-4" style="">
+					                        <label> 합계 금액: 
+					                       		<input type="text" class=""/> 
+					                       	</label> 
+					                    </div>
+					                    <div class="">
+					                       	<div style="float: right; margin-top: 30px; margin-right: 10px;">
+							                    <button class="">추가</button>
+							                    <button class="">취소</button>  
+					                       	</div> 
+					                    </div>
+					                </td>
+					          	</tr> 
+						    </thead>
+						</table>
+		            </form>
+            	</div>
+            </div>
+           	<div class="order-list-sheet" style="height: 248px; overflow: scroll;">
+	            <table class="table category-sheet" id="category-add-sheet-list">
+	                <thead>
+		                <tr>
+		                    <th>
+		                    	<input type="checkbox" name="" id="checkbox-productALL" class="product-checkbox" style="margin-left: 15px;" />
+		                    	<label class="" hidden=""></label>
+		                    </th>
+		                    <th>대분류</th>
+		                    <th>소분류</th>
+		                    <th>제품명</th>
+		                    <th>수량</th>
+		                    <th style="text-align: center">금액</th>
+		                    <th style="text-align: center">합계</th>
+		                    <th style="text-align: center">기타</th>  
+		                </tr>
+	                </thead>
+	                <tbody>  
+						<tr style="height: 40px;"> 
+							<td style="">
+								<input type="checkbox" style="margin-left: 15px"/>
+							</td>
+							<td>스마트폰</td>
+							<td>모바일</td>
+							<td>갤럭시s</td>
+							<td>1개</td>
+							<td style="text-align: center">50만원</td>
+							<td></td>
+							<td style="text-align: center">
+								<button>삭제</button>
+							</td> 
+						</tr>
+	                </tbody>
+	            </table>
+           	</div>
+           	
+           	<div class="" style="float: right; display: inline-block; margin-top: 10px;">
+           		<button type="submit" class="btn btn-warning" id="btn-register">등록</button>
+           		<button type="reset" class="btn btn-default" onclick="">취소</button>
+          	</div>
+           	
+		</div>
+	</div>
+</div>
+
+<!-- Modal -->
+<div id="store-search" class="modal fade" role="dialog">
+	<div class="modal-dialog modal-lg">
+
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">발주(구매) 발주처등록</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12" id="store-detail">
+						<form id="" class="form-horizontal" action="" method="post" enctype="">
+							<div class="form-group">
+							<label class="control-label col-sm-2" for="serach-store-no">매장명</label>
+								<div class="col-sm-10">
+									<select id="select-stores" class="form-control">
+										<option disabled selected> --지점을 선택하세요 -- </option>
+										<option v-bind:value="store.storeNo" v-for="store in stores">{{store.storeName }} </option>
+									</select>
+								</div>	
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2" for="serach-store-empNo">발주담당자</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name="storeEmp" placeholder="ex) 김아무개" v-bind:value="store.employeeName" readonly>
+								</div>
+							</div> 
+							<div class="form-group">
+								<label class="control-label col-sm-2">전화번호</label>
+								<div class="col-sm-10">
+									<input type="text" class="form-control" name="storeTel" placeholder="ex) 02-1234-5678" v-bind:value="store.storeTel" readonly>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-2">주소</label>
+								<div class="col-sm-10">
+									<input class="form-control" type="text" name="storeAddress" v-bind:value="store.storeAddress" readonly>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" id="btn-store-add" class="btn btn-info" data-dismiss="modal">등록</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+<script type="text/javascript">
+
+	// 발주등록 열기/닫기 정의
+	$(".order-add-list #order-add-list-btn").click(function() {
+		if($(this).text()=="상품내역 닫기") {
+			$(".order-add-list #add-form-list").hide();
+			$(this).text("상품내역 열기");
+		} else {
+			$(".order-add-list #add-form-list").show();
+			$(this).text("상품내역 닫기") ;
+		}
+	});
+	var storeNo = 0;
+	
+	var orderApp = new Vue({
+		el:"#order-store-form",
+		data: {
+			store:{}
+		}
+	});
+	
+	/* Modal에 적용하도록 정의 */
+	var storeApp = new Vue({
+		el:"#store-search",
+		data: {
+			stores:[],
+			store:{}
+		}
+	});
+	
+	//지점 선택시 ajax로 지점 정보, 매니저 정보를 불러온다.
+	$("#select-stores").change(function() {
+		var no = this.value;
+		storeNo = no;
+		
+		$.getJSON("/store/storeseachdetail.erp", {no:no}, function(result) {
+			storeApp.store = result;
+		});
+	});
+	
+	$("#btn-store-search").click(function() {
+		$.getJSON("/store/orderstoremodal.erp", function(result) {
+			storeApp.stores = result;
+		});
+	});
+	
+	$("#btn-store-add").click(function() {1
+		orderApp.store = storeApp.store;
+		
+		$.getJSON("/store/orderCategories.erp", function(result) {
+			categoriesApp.uppercategories = result;
+		});
+	});
+	
+	
+	// 상위 카테고리 선택시 하위 카테고리 AJAX로 받기
+	var categoriesApp = new Vue({
+		el:"#select-sub-category",
+		data: {
+			uppercategories:[],
+			categories:[],
+			products:[]
+		}
+	});
+	
+	$("#select-upper-category").change(function() {
+		var no = this.value;
+		$("#sub-default").prop("selected", true);
+		
+		$.getJSON("/products/subcategory.erp", {uppercateno:no}, function(result) {
+			categoriesApp.categories = result;
+		});
+	});
+	
+	$("#select-category").change(function() {
+		var no = this.value;
+		$("cate-default").prop("selected", true);
+		
+		$.getJSON("/products/categoryproducts.erp", {categoryno:no}, function(result) {
+			categoriesApp.products = result;
+		});
+	});
+</script>
+</html>

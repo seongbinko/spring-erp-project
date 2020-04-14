@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.jhta.erp.dao.JobGradeDao"> 
+	
+	<select id="searchGradeByOption" parameterType="map" resultType="JobGrade">
+		select
+			grade_no	no,
+			grade_name	gradeName,
+			grade_salary	gradeSalary
+		from 
+			job_grades
+		<where>
+			<if test="option == 'no'">
+				grade_no like '%' || #{keyword}
+			</if>
+			<if test="option == 'name'">
+				and grade_name like '%' || #{keyword} || '%'
+			</if>
+			<if test="option == 'salary'">
+				and grade_salary like '%' || #{keyword} || '%'
+			</if>
+		</where>
+			
+	</select>
+</mapper>

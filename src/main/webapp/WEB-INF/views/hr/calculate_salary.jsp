@@ -15,7 +15,7 @@
 <%@include file="hr_sidebar.jsp" %>
 <div class="container">
 	<div class="page-header">
-		<h1 style="text-align: center">급여계산/대장</h1>
+		<h1 style="text-align: center">급여계산</h1>
 	</div>
 	<div class="row">
 		<form id="add-payroll-table" class="form-horizontal" action="">

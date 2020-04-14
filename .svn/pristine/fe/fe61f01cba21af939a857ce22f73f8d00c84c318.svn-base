@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.erp.dao.PayrollTableDao">
+	<sql id="payrollTabel_Info">
+		payroll_no				payrollNo,
+		payroll_date			payrollDate,
+		payroll_month			payrollMonth,
+		payroll_type			payrollType,
+		payroll_amount			payrollAmount,
+		payroll_count			payrollCount
+	</sql>
+	
+	<insert id="addPayrollTable" parameterType="PayrollTable">
+		<selectKey keyProperty="payrollNo" resultType="int" order="BEFORE">
+			select
+				payroll_no_seq.nextval
+			from
+				dual
+		</selectKey>
+		insert into payroll_table
+		(payroll_no, payroll_date, payroll_month, payroll_type, payroll_amount, payroll_count)
+		values
+		(#{payrollNo}, #{payrollDate}, to_date(#{payrollMonth},'yyyy-mm'), #{payrollType}, #{payrollAmount}, #{payrollCount}) 
+	</insert>
+	
+	<select id="getTotalPageSize" parameterType="map" resultType="int">
+		select
+			count(*)
+		from 
+			payroll_table
+		<where>
+	        <if test="startDate != null ">
+	            payroll_date >= to_date(#{startDate}, 'yyyy-mm-dd')  
+	        </if>
+	        <if test="endDate != null ">
+	            and payroll_date &lt;= to_date(#{endDate}, 'yyyy-mm-dd')
+	        </if>
+		</where>
+	</select>
+	
+	<select id="searchPayrollTable" parameterType="map" resultType="PayrollTable">
+		select 
+				X.payrollNo		payrollNo,
+				X.payrollDate	payrollDate,
+				X.payrollMonth	payrollMonth,
+				X.payrollType	payrollType,
+				X.payrollAmount	payrollAmount,
+				X.payrollCount	payrollCount
+		from
+			(select
+				row_number() over(order by payroll_date desc) as rn,
+				<include refid="payrollTabel_Info"/>
+			from
+				payroll_table
+			<where>
+				<if test="startDate != null">
+					payroll_date >= to_date(#{startDate}, 'yyyy-mm-dd')
+				</if>
+				<if test="endDate != null">
+					and payroll_date &lt;= to_date(#{endDate},'yyyy-mm-dd')
+				</if>	
+			</where>) X
+		where 
+		    X.rn >= #{beginIndex}
+		    and X.rn &lt;= #{endIndex}
+	</select>
+</mapper> 

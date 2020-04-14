@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.erp.dao.ManagementDao">
+	<sql id="Management_info">
+		management_no		no,
+		management_type		type,
+		management_date		managementDate,
+		management_amount	amount,
+		employee_no			employeeNo,
+		employee_name		employeeName,
+		fixed_status		fixedStatus
+	</sql>
+	
+	<insert id="addManagement" parameterType="Management">
+		<selectKey keyProperty="no" resultType="int" order="BEFORE">
+			select
+				management_no_seq.nextval
+			from
+				dual
+		</selectKey>
+		insert into management
+		(management_no, management_type, management_date, management_amount, employee_no, employee_name)
+		values
+		(#{no}, #{type}, #{managementDate}, #{amount}, #{employeeNo}, #{employeeName})
+	</insert>
+	
+	<select id="getTotalPageSize" parameterType="map" resultType="int">
+		select
+			count(*)
+		from
+			management
+		<where>
+			<if test="option == 'no'">
+				management_no like '%' ||  #{keyword}		
+			</if>
+			<if test="option == 'type'">
+				and management_type like '%' || #{keyword} || '%'
+			</if>
+			<if test="option == 'employeeNo'">
+				and employee_no like '%' ||  #{keyword}
+			</if>
+			<if test="option == 'employeeName'">
+				and employee_name like '%' || #{keyword} || '%'
+			</if>
+	        <if test="startDate != null ">
+	            and management_date > to_date(#{startDate}, 'yyyy-mm-dd')  
+	        </if>
+	        <if test="endDate != null ">
+	            and management_date &lt;= to_date(#{endDate}, 'yyyy-mm-dd')
+	        </if>
+		</where>
+	</select>
+	
+	<select id="searchManagement" parameterType="map" resultType="Management">
+		select
+			X.no				no,
+			X.type				type,
+			X.managementDate	managementDate,
+			X.amount			amount,
+			X.employeeNo		employeeNo,
+			X.employeeName		employeeName,
+			X.fixedStatus		fixedStatus
+		from 
+			(select
+				row_number() over (order by management_date desc) as rn,
+				<include refid="Management_info"/>
+			from
+				management
+			<where>
+				<if test="option == 'no'">
+					management_no like '%' ||  #{keyword}		
+				</if>
+				<if test="option == 'type'">
+					and management_type like '%' || #{keyword} || '%'
+				</if>
+				<if test="option == 'employeeNo'">
+					and employee_no like '%' ||  #{keyword}
+				</if>
+				<if test="option == 'employeeName'">
+					and employee_name like '%' || #{keyword} || '%'
+				</if>
+		        <if test="startDate != null">
+		            and management_date > to_date(#{startDate}, 'yyyy-mm-dd')  
+		        </if>
+		        <if test="endDate != null">
+		            and management_date &lt;= to_date(#{endDate}, 'yyyy-mm-dd')
+		        </if>			
+			</where>) X
+		where 
+		    X.rn >= #{beginIndex}
+		    and X.rn &lt;= #{endIndex}
+	</select>
+	<select id="getSelectedEmpByPayMonth" parameterType="String" resultType="Management">
+		select 
+			<include refid="Management_info"/>
+		from
+			management
+		where
+			to_char(management_date, 'yyyy-mm') = #{value}
+			and fixed_status ='N'
+	</select>
+	
+	<select id="getManagementByEmpNoByPayMonth" parameterType="map" resultType="Management">
+		select
+			<include refid="Management_info"/>
+		from
+			management
+		where
+			to_char(management_date, 'yyyy-mm') = #{payMonth}
+			and employee_no = #{empNo}
+			and fixed_status = 'N'
+	</select>
+	
+	<update id="updateManagement">
+		update
+			management
+		set
+			fixed_status = 'Y'
+	</update>
+	
+</mapper> 

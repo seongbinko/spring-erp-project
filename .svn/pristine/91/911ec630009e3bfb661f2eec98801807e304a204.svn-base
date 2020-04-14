@@ -1,0 +1,10 @@
+package kr.co.jhta.erp.dao;
+
+import kr.co.jhta.erp.vo.PayrollTable;
+
+public interface PayrollTableDao {
+
+	void addPayrollTable(PayrollTable payrollTable);
+	
+	
+}

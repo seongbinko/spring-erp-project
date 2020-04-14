@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.erp.dao.OrderDao">
+	
+	<sql id="order_columns">
+		order_no				as no,
+		product_no				as productNo,
+		store_no				as storeNo,
+		order_amount			as amount,
+		order_request_date		as requestDate,
+		order_response_date		as responseDate,
+		order_complete			as complete,
+		employee_no				as employeeNo
+	</sql>
+
+<!-- 
+	<insert id="insertNewOrder" parameterType="Order">
+		insert into orders
+		(order_amount, order_request_date, order_response_date, order_complete)
+		values
+		(#{amount}, #{request_date}, #{response_date}, #{complete})
+	</insert>
+ -->
+ 
+	<select id="getOrderByNo" parameterType="int" resultType="Order">
+		select
+			<include refid="order_columns" />
+		from
+			orders
+		where
+			order_no = #{value}
+	</select>
+	 
+ 	<update id="updateOrder" parameterType="Order">
+ 		update
+ 			orders
+ 		set
+ 			order_amount			= #{name}
+			order_request_date		= #{request_date}
+			order_response_date		= #{response_date}
+			order_complete			= #{order_complete}
+ 	</update>
+
+ 	<delete id="deleteOrder" parameterType="int">
+ 		delete from
+ 			orders
+ 		where
+ 			order_no = #{value}
+ 	</delete>
+ 
+</mapper> 

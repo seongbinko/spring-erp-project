@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.erp.dao.ProductApprovalDao">
+
+	<insert id="insertFactoryApproval" parameterType="ProductApproval">
+		insert into PRODUCT_APPROVAL
+		(APPROVAL_NO, TYPE_NO, EMPLOYEE_REQUESTER, EMPLOYEE_RESPONSER, FACTORY_ORDER_NO)
+		values
+		(PRODUCT_APPROVAL_NO_SEQ.nextval, #{typeNo}, #{requesterNo}, #{responserNo}, #{factoryOrderNo})
+	</insert>
+</mapper> 

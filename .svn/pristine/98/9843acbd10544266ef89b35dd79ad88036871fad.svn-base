@@ -1,0 +1,17 @@
+package kr.co.jhta.erp.service;
+
+import java.util.List;
+
+import kr.co.jhta.erp.dto.NoticeListDto;
+import kr.co.jhta.erp.vo.Notices;
+
+public interface NoticeService {
+
+	List<NoticeListDto> getNoticeLists(int deptNo);
+	NoticeListDto getNoticeByNo(int noticeNo);
+	void updateView(int noticeNo);
+	NoticeListDto nextArticle(Notices notice);
+	NoticeListDto prevArticle(Notices notice);
+	void addNotice(Notices notice);
+	void updateNotice(Notices notice);
+}

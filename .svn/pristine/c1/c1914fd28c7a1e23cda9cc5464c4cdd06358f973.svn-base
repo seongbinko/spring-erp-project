@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.jhta.erp.dao.StoreDao">
+
+	<sql id="store_columns">
+			STORE_NO 		as no,
+			STORE_NAME		as name,
+			STORE_ADDRESS	as address,
+			EMPLOYEE_NO		as employeeNo,
+			STORE_TEL		as tel,
+			STORE_LON		as lon, 
+			STORE_LAT		as lat
+	</sql>
+
+	<select id="getStoreFinds" resultType="Store">
+		select
+			<include refid="store_columns" />
+		from
+			stores
+		where
+		STORE_NAME like '%' || #{value} || '%'
+		OR
+		STORE_ADDRESS  like '%' || #{value} || '%'
+		order by
+			store_no asc
+	</select>
+	
+	<select id="getAllStores" resultType="Store">
+		select
+			<include refid="store_columns" />
+		from
+			stores
+		order by
+			store_no asc
+	</select>
+	
+	<select id="getStoreByNo" parameterType="int" resultType="Store">
+		select
+			<include refid="store_columns" />
+		from
+			stores
+		where 
+			store_no = #{value}
+	</select>
+	
+	<update id="updateStore" parameterType="Store">
+		update 
+			stores
+		set
+			STORE_NAME		= #{name},
+			STORE_ADDRESS	= #{address},
+			EMPLOYEE_NO		= #{employeeNo},
+			STORE_TEL		= #{tel}
+		where
+			store_no = #{no}
+	</update>	
+	
+	<select id="getStoreDetailByNo" parameterType="int" resultType="StoreManagementDto">
+		select
+			A.STORE_NO 			as storeNo,
+			A.STORE_NAME		as storeName,
+			A.STORE_TEL			as storeTel,
+			A.STORE_ADDRESS		as storeAddress,
+			A.EMPLOYEE_NO		as employeeNo,
+			B.EMPLOYEE_NAME		as employeeName,
+			B.EMPLOYEE_TEL		as employeeTel,
+			C.DEPARTMENT_NAME	as employeeDepartmentName,
+			D.GRADE_NAME		as employeeGradeName,
+			B.IMAGE_NAME		as employeeImageName,
+			B.EMAIL		 		as employeeEmail
+		from
+			stores A, employees B, departments C, job_grades D
+		where
+			A.employee_no = B.employee_no
+			and B.DEPARTMENT_NO = C.DEPARTMENT_NO
+			and A.store_no = #{value}
+	</select>
+	
+	<select id="getAllStoreDetails" resultType="StoreManagementDto">
+		select
+			A.STORE_NO 			as storeNo,
+			A.STORE_NAME		as storeName,
+			A.STORE_TEL			as storeTel,
+			A.STORE_ADDRESS		as storeAddress,
+			A.EMPLOYEE_NO		as employeeNo,
+			B.EMPLOYEE_NAME		as employeeName
+		from
+			stores A, employees B
+		where
+			A.employee_no = B.employee_no(+)
+	</select>
+</mapper> 

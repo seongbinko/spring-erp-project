@@ -1,0 +1,10 @@
+package kr.co.jhta.erp.dao;
+
+import kr.co.jhta.erp.form.FactoryOrderAddForm;
+import kr.co.jhta.erp.vo.FactoryOrderItem;
+
+public interface FactoryOrderDao {
+
+	void insertOrder(FactoryOrderAddForm orderForm);
+	void insertOrderItem(FactoryOrderItem orderItem);
+}
