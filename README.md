@@ -4,8 +4,9 @@
   - 명칭 : ERP MASTER
   - 개발 인원 : 4명
   - 개발 기간 :  2020.02.01 ~ 2020. 02. 27 (27일)
-  - 담당 역할 :  인사관리, 근태관리, 급여관리  (인사담당자 전용)
-  - 구현 화면 :  https://github.com/seongbinko/spring-erp-project/tree/master/src/main/webapp/WEB-INF/views/hr
+  - 담당 역할 :  사원관리,부서관리, 근태관리, 급여관리  (인사담당자 전용)
+  - 구현 화면 :  https://github.com/seongbinko/spring-erp-project/tree/ko-v1.0
+                (개인적으로 수행한 부분이며 branch로 관리중입니다.)
   - 주요 기능 : 사원,부서,인사발령,근태 등록/조회 기능
                 사원 엑셀 일괄등록, 사원목록 엑셀다운
                 출퇴근 기능, 급여계산 기능
