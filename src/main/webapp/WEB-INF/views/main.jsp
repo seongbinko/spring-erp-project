@@ -57,40 +57,7 @@
 								<p>${LE_detail.gradeName }</p>
 								<p>${LE_detail.email }</p>
 								<p>${LE_detail.tel }</p>
-								<div class="btn-group">
-									<a href="my/sendmessages.erp"><button type="button">보낸메세지</button></a>
-									<a href="my/getmessage.erp"><button type="button">받은메세지</button></a>								
-									<a href="my/searchemployee.erp"><button type="button">직원검색</button></a>
-								</div>
 							</div>
-						</div>
-					</div>
-					<div class="panel panel-default" style="margin-top: -5px;">
-						<div class="panel-heading">공지사항 게시판</div>
-						<div class="panel-body">
-							<table class="table table-hover notice">
-								<colgroup>
-									<col width="45%">
-									<col width="35%">
-									<col width="20%">
-								</colgroup>
-								<thead>
-									<tr>
-										<th>제목</th>
-										<th>부서</th>
-										<th>조회수</th>
-									</tr>
-								</thead>
-								<tbody>
-									<c:forEach var="notice" items="${notices }" varStatus="loop">
-										<tr onclick="showNotice(${notice.no }, ${notice.departmentNo })">
-											<td>${notice.title }</td>
-											<td>${notice.departmentName }</td>
-											<td>${notice.viewCount }</td>
-										</tr>
-									</c:forEach>
-								</tbody>
-							</table>
 						</div>
 					</div>
 				</div>
@@ -99,10 +66,6 @@
 	</div>
 </div>
 <script type="text/javascript">
-	function showNotice(noticeNo, deptNo) {
-		var url = "notice/detail.erp?deptno="+deptNo+"&noticeno="+noticeNo;
-		window.location = url;
-	}
 	
 	$("#intime-btn").click(function(){
 		var intime = new Date();

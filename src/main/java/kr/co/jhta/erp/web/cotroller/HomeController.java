@@ -9,16 +9,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import kr.co.jhta.erp.dto.EmployeeDetailDto;
-import kr.co.jhta.erp.dto.NoticeListDto;
 import kr.co.jhta.erp.service.AttendanceService;
-import kr.co.jhta.erp.service.NoticeService;
 import kr.co.jhta.erp.vo.Attendance;
 
 @Controller
 public class HomeController {
-	
-	@Autowired
-	private NoticeService noticeService;
+
 	@Autowired
 	private AttendanceService attendanceService;
 	
@@ -36,11 +32,9 @@ public class HomeController {
 			return "redirect:/home.erp";
 		}
 		int deptNo = employee.getDepartmentNo();
-		List<NoticeListDto> notices = noticeService.getMainNoticeLists(deptNo);
-		
+
 		Attendance attendance = attendanceService.getAttendanceTodayByEmpNo(employee.getNo());
 		model.addAttribute("attendance", attendance);
-		model.addAttribute("notices", notices);
 		return "main";
 	}
 	

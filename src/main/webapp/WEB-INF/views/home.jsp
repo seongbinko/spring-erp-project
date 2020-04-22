@@ -32,7 +32,6 @@
 					<button class="btn btn-primary btn-right">로그인</button>
 				</div>
 			</form>
-			<a href=""><button type="button" class="btn btn-default">비밀번호 찾기</button></a>
 		</div>
 	</div>
 </div>
