@@ -258,7 +258,7 @@
 
 	
 	
-	// 기간 검색
+	// 기간 검색 기능
 	$(function(){
 		var date = new Date();
 		now = getFormatDate(date);
