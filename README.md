@@ -1,5 +1,9 @@
 # ERP MASTER
 ![screencapture-localhost-main-erp-2020-04-04-12_35_34](https://user-images.githubusercontent.com/60464424/78417821-f6f6b700-7670-11ea-9e2e-2c00e9ee0d53.png)
+### 프로젝트 주제 선정 이유 
+  - 지난 JSP Model1 방식으로 웹 쇼핑몰을 구현하였는데, 쇼핑몰 특성상 화면 디자인에 시간을 많이 소요하게 되었다.
+    그래서 이번 프로젝트는 업무로직이 많은 것을 해보고 싶었고 팀원들과 상의하여 ERP를 선정하게 되었다.
+    
 ### 개요
   - 명칭 : ERP MASTER
   - 개발 인원 : 4명
