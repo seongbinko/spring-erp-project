@@ -111,7 +111,7 @@
 		<dependency>
 		    <groupId>org.mybatis</groupId>
 		    <artifactId>mybatis</artifactId>
-		    <version>3.5.3</version>
+		    <version>3.5.6</version>
 		</dependency>
 		
 		<!-- mybatis-spring 연동지원 라이브러리 의존성 정의 -->
